@@ -2,12 +2,26 @@
 
 const express = require("express");
 const dbPool = require("./configs/config.db.js"); // Import cấu hình database
-const { sequelize } = require("./configs/sequelize.js"); // Import Sequelize instance
-
+const sequelize = require("./configs/sequelize.js"); // Import Sequelize instance
+require("./models");
 const app = express();
 const port = 2811;
 
-app.use(express.json());
+// parse JSON and capture raw body for debugging (req.rawBody)
+app.use(express.json({
+  verify: (req, res, buf) => {
+    try {
+      req.rawBody = buf.toString();
+    } catch (e) {
+      req.rawBody = undefined;
+    }
+  }
+}));
+app.use(express.urlencoded({ extended: true }));
+
+// Register routes
+const routes = require("./routes");
+app.use(routes);
 
 app.get("", async (req, res) => {
   res.send("APIs of linhdd is running");
@@ -31,7 +45,7 @@ app.get("", async (req, res) => {
 async function startServer() {
   try {
     //{ force: true } sẽ XÓA BỎ và tạo lại các bảng
-    await sequelize.sync({ force: true, alter: true });
+    //await sequelize.sync({ force: false, alter: true });
     console.log("✅ Đồng bộ hóa Models với Database thành công.");
 
     app.listen(port, () => {
