@@ -7,16 +7,7 @@ require("./models");
 const app = express();
 const port = 2811;
 
-// parse JSON and capture raw body for debugging (req.rawBody)
-app.use(express.json({
-  verify: (req, res, buf) => {
-    try {
-      req.rawBody = buf.toString();
-    } catch (e) {
-      req.rawBody = undefined;
-    }
-  }
-}));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Register routes

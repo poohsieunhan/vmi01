@@ -4,13 +4,13 @@ const { SuccessResponse } = require("../core/success.response");
 
 class CompanyController {
   createCompany = async (req, res, next) => {
-    const inputData = req.body;
-    console.log('CreateCompany - HEADERS:', req.headers);
-    console.log('CreateCompany - RAW_BODY:', req.rawBody);
-    console.log('CreateCompany - BODY:', inputData);
+    //const inputData = req.body;
+    // console.log('CreateCompany - HEADERS:', req.headers);
+    // console.log('CreateCompany - RAW_BODY:', req.rawBody);
+    // console.log('CreateCompany - BODY:', inputData);
     new SuccessResponse({
       message: "Company created successfully",
-      metadata: await companyService.createCompany(inputData),
+      metadata: await companyService.createCompany(req.body),
     }).send(res);
   };
 
