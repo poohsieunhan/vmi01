@@ -15,7 +15,12 @@ const sequelize = new Sequelize(
     host: process.env.DB_HOST,
     port: process.env.DB_PORT && Number(process.env.DB_PORT),
     dialect: dialect,
-    logging: true
+    logging: true,
+    timezone: 'Asia/Ho_Chi_Minh',
+    dialectoptions: {
+      dateStrings: true,
+      typeCast: true
+    },
   }
 );
 
