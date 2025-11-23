@@ -1,10 +1,17 @@
 // services/company.service.js
-const Company = require("../models/company.model");
+const CompanyModel = require("../models/company.model");
+const {ErrorResponse, BadRequestError} = require("../core/error.response");
 
 class CompanyService {
   // Tạo mới 1 Company
   static async createCompany(data) {
-    const company = await Company.create(data);
+    const maSoThue = data.MaSoThue;
+    const existingCompany = await CompanyModel.findOne({ where: { MaSoThue: maSoThue } });
+    if (existingCompany) {
+      throw new ErrorResponse("Company with this MaSoThue already exists.");
+    }
+
+    const company = await CompanyModel.create(data);
     return company;
   }
 
@@ -12,7 +19,7 @@ class CompanyService {
   static async getAllCompanies({ page = 1, limit = 20 } = {}) {
     const offset = (page - 1) * limit;
 
-    const { rows, count } = await Company.findAndCountAll({
+    const { rows, count } = await CompanyModel.findAndCountAll({
       offset,
       limit,
       order: [["Id", "DESC"]],
@@ -31,13 +38,14 @@ class CompanyService {
 
   // Lấy detail 1 Company theo Id
   static async getCompanyById(id) {
-    const company = await Company.findByPk(id);
+    const company = await CompanyModel.findByPk(id);
     return company; // có thể null nếu không tìm thấy
   }
 
   // Cập nhật 1 Company
   static async updateCompany(id, data) {
-    const company = await Company.findByPk(id);
+    //console.log('UpdateCompany - data:', data);
+    const company = await CompanyModel.findByPk(id);
     if (!company) {
       return null;
     }
@@ -48,7 +56,7 @@ class CompanyService {
 
   // Xóa 1 Company
   static async deleteCompany(id) {
-    const company = await Company.findByPk(id);
+    const company = await CompanyModel.findByPk(id);
     if (!company) {
       return null;
     }

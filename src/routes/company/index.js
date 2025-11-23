@@ -7,6 +7,9 @@ const router = express.Router();
 // router.use(checkPermission('0000'));
 
 router.get("", asyncHandler(companyController.getAllCompanies));
+router.get("/:Id", asyncHandler(companyController.getCompanyById));
 router.post("", asyncHandler(companyController.createCompany));
+router.put("/:Id", asyncHandler(companyController.updateCompany));
+router.delete("/:Id", asyncHandler(companyController.deleteCompany));
 
 module.exports = router;
