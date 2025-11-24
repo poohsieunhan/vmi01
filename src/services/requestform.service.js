@@ -1,11 +1,14 @@
-const RequestFormModel = require('../models/requestform.model');;
-const { ErrorResponse, BadRequestError } = require('../core/error.response');
+const RequestFormModel = require("../models/requestform.model");
+const RequestFormDetailModel = require("../models/requestformdetail.model");
+const { ErrorResponse, BadRequestError } = require("../core/error.response");
+const { Op } = require("sequelize");
 
 class RequestFormService {
-    
   static async createRequestForm(data) {
     const soPhieu = data.SoPhieu;
-    const existingRF = await RequestFormModel.findOne({ where: { SoPhieu: soPhieu } });
+    const existingRF = await RequestFormModel.findOne({
+      where: { SoPhieu: soPhieu },
+    });
     if (existingRF) {
       throw new ErrorResponse("SoPhieu already exists.");
     }
@@ -36,14 +39,21 @@ class RequestFormService {
   }
 
   // Lấy detail 1 Company theo SoPhieu
-  static async getRfById(soPhieu) {
-    const rf = await RequestFormModel.findOne({ where: { SoPhieu: soPhieu } });
+  static async getRfBySoPhieu(soPhieu) {
+    const rf = await RequestFormModel.findAll({
+      where: {
+        SoPhieu: { [Op.like]: `%${soPhieu}%` },
+      },
+    });
     return rf; // có thể null nếu không tìm thấy
   }
 
   // Cập nhật 1 Company
   static async updateRequestForm(id, data) {
-    //console.log('UpdateCompany - data:', data);
+    //console.log("UpdateCompany - data:", data);
+    //console.log("UpdateRequestForm - id:", id);
+    
+
     const rf = await RequestFormModel.findByPk(id);
     if (!rf) {
       return null;
@@ -59,7 +69,10 @@ class RequestFormService {
     if (!rf) {
       return null;
     }
-
+    const foundRfd = await RequestFormDetailModel.findByPk(rf.RequestFormId);
+    if (foundRfd) {
+      await foundRfd.destroy();
+    }
     await rf.destroy();
     return true;
   }

@@ -63,6 +63,16 @@ const RequestForm = sequelize.define(
       type: DataTypes.DATE,
       allowNull: false,
     },
+    CongTySuDungId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "tblCompany", // tên bảng Company trong database
+        key: "Id",
+      },
+      onUpdate: "CASCADE",
+      onDelete: "RESTRICT",
+    },
   },
   {
     tableName: "tblRequestForm", // Tên bảng trong database

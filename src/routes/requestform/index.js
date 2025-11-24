@@ -7,9 +7,12 @@ const router = express.Router();
 // router.use(checkPermission('0000'));
 
 router.get("", asyncHandler(requestFormController.getAllRequestForm));
-//router.get("/:Id", asyncHandler(deviceController.getDeviceById));
+router.get(
+  "/:SoPhieu",
+  asyncHandler(requestFormController.getRequestFormBySoPhieu)
+);
 router.post("", asyncHandler(requestFormController.createRequestForm));
-//router.put("/:Id", asyncHandler(deviceController.updateDevice));
-//router.delete("/:Id", asyncHandler(deviceController.deleteDevice));
+router.put("/:Id", asyncHandler(requestFormController.updateRequestForm));
+router.delete("/:Id", asyncHandler(requestFormController.deleteRequestForm));
 
 module.exports = router;
