@@ -29,6 +29,54 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT'
       },
+      SoLuong: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+          },
+      TrangThaiThietBiId: {
+            type: Sequelize.TINYINT,
+            allowNull: false,
+            references: {
+              model: "tblDeviceStatus", // tên bảng tblDeviceStatus trong database
+              key: "Id",  
+            },
+            onUpdate: "CASCADE",
+            onDelete: "RESTRICT",
+          },
+      isHC: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+          },  
+      isKD: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+          },
+      isDTN: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+          },  
+      isKhac: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+          }, 
+      LabId: {
+            type: Sequelize.TINYINT,
+            allowNull: true,
+            references: {
+              model: "tblLab", // tên bảng Lab trong database
+              key: "Id",
+            },
+            onUpdate: "CASCADE",
+            onDelete: "RESTRICT",
+          },
+      GhiChu: {
+            type: Sequelize.STRING(150),
+            allowNull: true,
+          }, 
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
