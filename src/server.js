@@ -14,9 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 const routes = require("./routes");
 app.use(routes);
 
-app.get("", async (req, res) => {
-
-});
+app.get("", async (req, res) => {});
 
 // Khởi động Server
 // app.listen(port, () => {
@@ -36,7 +34,7 @@ app.get("", async (req, res) => {
 async function startServer() {
   try {
     //{ force: true } sẽ XÓA BỎ và tạo lại các bảng
-    await sequelize.sync({ force: false, alter: true });
+    //await sequelize.sync({ force: false, alter: true });
     console.log("✅ Đồng bộ hóa Models với Database thành công.");
 
     app.listen(port, () => {
