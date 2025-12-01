@@ -7,13 +7,28 @@ const api = axios.create({
   baseURL: API_BASE_URL,
 });
 
-export const companyApi = {
+const companyApi = {
   async getAll() {
     const res = await api.get("/company", {
       //params: { page, limit },
     });
     return res.data.metadata; // Trả về phần metadata chứa data và pagination
   },
+
+  async add(data) {
+    const res = await api.post("/company", data);
+    return res.data;
+  },
+
+  async update(id, data) {
+    const res = await api.put(`/company/${id}`, data);
+    return res.data;
+  },
+
+  async delete(id) {
+    const res = await api.delete(`/company/${id}`);
+    return res.data;
+  },
 };
 
-export default api;
+export default companyApi;

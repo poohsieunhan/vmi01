@@ -1,8 +1,9 @@
 // src/pages/CompanyListPage.jsx
 import { useEffect, useState } from "react";
-import { companyApi } from "../services/companyApi";
+import companyApi from "../services/companyApi";
 import Modal from "../components/Modal";
 import { thStyle, tdStyle } from "../components/tableStyles";
+import toast from "react-hot-toast";
 
 function CompanyListPage() {
   const [companies, setCompanies] = useState([]);
@@ -106,7 +107,7 @@ function CompanyListPage() {
           return;
         }
 
-        await companyApi.create(formData);
+        await companyApi.add(formData); // Changed from 'create' to 'add'
         await fetchCompanies({ page: 1, limit: 10 });
         setOpen(false);
       }
@@ -117,17 +118,24 @@ function CompanyListPage() {
           setSubmitting(false);
           return;
         }
-
-        await companyApi.update(selectedCompany.Id, formData);
-        await fetchCompanies({
-          page: pagination?.page || 1,
-          limit: pagination?.limit || 10,
-        });
-        setOpen(false);
+        try {
+          await companyApi.update(selectedCompany.Id, formData);
+          await fetchCompanies({
+            page: pagination?.page || 1,
+            limit: pagination?.limit || 10,
+          });
+          setOpen(false);
+          toast.success("Cập nhật công ty thành công.");
+        } catch (error) {
+          const msg =
+            error.response?.data?.message ||
+            "Có lỗi xảy ra khi cập nhật công ty.";
+          toast.error(msg);
+        }
       }
 
       if (mode === "delete" && selectedCompany) {
-        await companyApi.remove(selectedCompany.Id);
+        await companyApi.delete(selectedCompany.Id); // Changed from 'remove' to 'delete'
         await fetchCompanies({
           page: 1,
           limit: pagination?.limit || 10,
@@ -185,7 +193,10 @@ function CompanyListPage() {
                   <td style={tdStyle}>{c.Tel}</td>
                   <td style={tdStyle}>{c.Fax}</td>
                   <td style={tdStyle}>
-                    <button onClick={() => openEdit(c)} style={{ marginRight: 8 }}>
+                    <button
+                      onClick={() => openEdit(c)}
+                      style={{ marginRight: 8 }}
+                    >
                       Edit
                     </button>
                     <button onClick={() => openDelete(c)}>Delete</button>
@@ -204,11 +215,21 @@ function CompanyListPage() {
           </table>
 
           {pagination && (
-            <div style={{ marginTop: "12px", display: "flex", gap: "8px", alignItems: "center" }}>
+            <div
+              style={{
+                marginTop: "12px",
+                display: "flex",
+                gap: "8px",
+                alignItems: "center",
+              }}
+            >
               <button
                 disabled={pagination.page <= 1}
                 onClick={() =>
-                  fetchCompanies({ page: pagination.page - 1, limit: pagination.limit })
+                  fetchCompanies({
+                    page: pagination.page - 1,
+                    limit: pagination.limit,
+                  })
                 }
               >
                 Trang trước
@@ -219,7 +240,10 @@ function CompanyListPage() {
               <button
                 disabled={pagination.page >= pagination.totalPages}
                 onClick={() =>
-                  fetchCompanies({ page: pagination.page + 1, limit: pagination.limit })
+                  fetchCompanies({
+                    page: pagination.page + 1,
+                    limit: pagination.limit,
+                  })
                 }
               >
                 Trang sau
@@ -245,10 +269,18 @@ function CompanyListPage() {
           <form onSubmit={handleSubmit}>
             <p>
               Bạn có chắc chắn muốn xóa công ty{" "}
-              <strong>{selectedCompany.TenCongTy}</strong> (ID: {selectedCompany.Id})?
+              <strong>{selectedCompany.TenCongTy}</strong> (ID:{" "}
+              {selectedCompany.Id})?
             </p>
             {formError && <p style={{ color: "red" }}>{formError}</p>}
-            <div style={{ marginTop: 16, display: "flex", gap: 8, justifyContent: "flex-end" }}>
+            <div
+              style={{
+                marginTop: 16,
+                display: "flex",
+                gap: 8,
+                justifyContent: "flex-end",
+              }}
+            >
               <button type="button" onClick={closeModal} disabled={submitting}>
                 Hủy
               </button>
@@ -300,10 +332,19 @@ function CompanyListPage() {
             </div>
 
             {formError && (
-              <p style={{ color: "red", marginTop: 8, marginBottom: 0 }}>{formError}</p>
+              <p style={{ color: "red", marginTop: 8, marginBottom: 0 }}>
+                {formError}
+              </p>
             )}
 
-            <div style={{ marginTop: 16, display: "flex", gap: 8, justifyContent: "flex-end" }}>
+            <div
+              style={{
+                marginTop: 16,
+                display: "flex",
+                gap: 8,
+                justifyContent: "flex-end",
+              }}
+            >
               <button type="button" onClick={closeModal} disabled={submitting}>
                 Hủy
               </button>
