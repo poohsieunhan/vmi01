@@ -21,7 +21,7 @@ function Modal({ open, title, onClose, children }) {
   if (!open) return null;
 
   return (
-    <div style={overlayStyle} onClick={onClose}>
+    <div style={overlayStyle}>
       <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
         <div
           style={{

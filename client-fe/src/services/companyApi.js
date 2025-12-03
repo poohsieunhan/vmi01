@@ -8,9 +8,9 @@ const api = axios.create({
 });
 
 const companyApi = {
-  async getAll() {
+  async getAll({ page = 1, limit = 10}) {
     const res = await api.get("/company", {
-      //params: { page, limit },
+      params: { page, limit },
     });
     return res.data.metadata; // Trả về phần metadata chứa data và pagination
   },

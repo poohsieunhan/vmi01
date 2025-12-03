@@ -16,7 +16,7 @@ class CompanyService {
   }
 
   // Lấy danh sách Company
-  static async getAllCompanies({ page = 1, limit = 20 } = {}) {
+  static async getAllCompanies({ page = 1, limit = 10 } = {}) {
     const offset = (page - 1) * limit;
 
     const { rows, count } = await CompanyModel.findAndCountAll({

@@ -1,20 +1,6 @@
 // src/components/company/CompanyFormModal.jsx
-import Modal from "../Modal";
-
-function InputField({ label, name, value, onChange, type = "text" }) {
-  return (
-    <div className="space-y-1">
-      <label className="text-sm font-medium text-slate-700">{label}</label>
-      <input
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-      />
-    </div>
-  );
-}
+import Modal from "../common/MyModal";
+import MyInputField from "../common/MyInputField";
 
 function CompanyFormModal({
   open,
@@ -35,7 +21,11 @@ function CompanyFormModal({
       : "Xóa công ty";
 
   return (
-    <Modal open={open} title={title} onClose={onClose}>
+    <Modal
+      open={open}
+      title={title}
+      onClose={onClose}    
+    >
       {mode === "delete" && selectedCompany ? (
         <form onSubmit={onSubmit} className="space-y-4">
           <p className="text-sm text-slate-700">
@@ -44,7 +34,7 @@ function CompanyFormModal({
             (ID: {selectedCompany.Id})?
           </p>
           {formError && <p className="text-sm text-rose-600">{formError}</p>}
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end gap-2" >
             <button
               type="button"
               onClick={onClose}
@@ -63,40 +53,40 @@ function CompanyFormModal({
           </div>
         </form>
       ) : (
-        <form onSubmit={onSubmit} className="space-y-4">
-          <InputField
-            label="Tên công ty (*)"
+        <form onSubmit={onSubmit} className="space-y-4 text-left">
+          <MyInputField
+            label="Tên công ty: (*)"
             name="TenCongTy"
             value={formData.TenCongTy}
             onChange={onChange}
           />
-          <InputField
-            label="Địa chỉ"
+          <MyInputField
+            label="Địa chỉ:"
             name="DiaChi"
             value={formData.DiaChi}
             onChange={onChange}
           />
-          <InputField
-            label="Mã số thuế"
+          <MyInputField
+            label="Mã số thuế:"
             name="MaSoThue"
             value={formData.MaSoThue}
             onChange={onChange}
           />
-          <InputField
-            label="Email"
+          <MyInputField
+            label="Email:"
             name="Email"
             type="email"
             value={formData.Email}
             onChange={onChange}
           />
-          <InputField
-            label="Tel"
+          <MyInputField
+            label="Số điện thoại:"
             name="Tel"
             value={formData.Tel}
             onChange={onChange}
           />
-          <InputField
-            label="Fax"
+          <MyInputField
+            label="Fax:"
             name="Fax"
             value={formData.Fax}
             onChange={onChange}

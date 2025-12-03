@@ -1,5 +1,4 @@
-// src/components/company/CompanyTable.jsx
-// DataTable generic: dùng được cho nhiều entity, không chỉ Company
+// DataTable generic: dùng được cho nhiều entity
 
 /* eslint-disable react/prop-types */
 
@@ -13,12 +12,10 @@ function MyDataTable({
   actionsHeader = "THAO TÁC",
 }) {
   const hasActions = typeof renderActions === "function";
-
   return (
     <div className="mt-6 overflow-x-auto">
-      {/* wrapper để bo góc + đổ bóng nhẹ */}
-      <div className="inline-block min-w-full align-middle rounded-lg overflow-hidden shadow-sm">
-        <table className="min-w-full text-sm text-slate-700 border border-slate-200 border-collapse bg-white">
+      <div className="inline-block min-w-full align-middle rounded-lg overflow-hidden shadow-sm ">
+        <table className="min-w-full text-sm text-slate-700 border border-slate-200 border-collapse bg-white ">
           {/* HEADER */}
           <thead className="bg-slate-50">
             <tr>
@@ -26,7 +23,7 @@ function MyDataTable({
                 <th
                   key={col.id}
                   className={
-                    "px-4 py-2 border border-slate-200 text-left text-xs font-semibold text-slate-500 " +
+                    "px-4 py-2 border border-slate-200 text-center text-xs font-semibold text-slate-500 " +
                     (col.thClassName || "")
                   }
                 >
@@ -35,7 +32,7 @@ function MyDataTable({
               ))}
 
               {hasActions && (
-                <th className="px-4 py-2 border border-slate-200 text-right text-xs font-semibold text-slate-500 whitespace-nowrap">
+                <th className="px-4 py-2 border border-slate-200 text-center text-xs font-semibold text-slate-500 whitespace-nowrap">
                   {actionsHeader}
                 </th>
               )}
@@ -58,7 +55,7 @@ function MyDataTable({
             {data.map((row, index) => (
               <tr
                 key={row.Id ?? row.id ?? index}
-                className="odd:bg-white even:bg-slate-50 hover:bg-slate-100 transition-colors"
+                className="odd:bg-white even:bg-slate-100 hover:bg-slate-300 transition-colors"
               >
                 {columns.map((col) => {
                   const value =
@@ -100,7 +97,12 @@ function MyDataTable({
           <button
             type="button"
             disabled={pagination.page <= 1}
-            onClick={() => onChangePage(pagination.page - 1)}
+            //onClick={() => onChangePage(pagination.page - 1)}
+            onClick={() => {
+              const newPage = pagination.page - 1;
+              console.log("MyDataTable: click Prev ->", newPage);
+              onChangePage && onChangePage(newPage);
+            }}
             className="px-3 py-1.5 rounded border border-slate-300 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Trang trước
@@ -113,7 +115,12 @@ function MyDataTable({
           <button
             type="button"
             disabled={pagination.page >= pagination.totalPages}
-            onClick={() => onChangePage(pagination.page + 1)}
+            //onClick={() => onChangePage(pagination.page + 1)}
+            onClick={() => {
+              const newPage = pagination.page + 1;
+              console.log("MyDataTable: click Next ->", newPage);
+              onChangePage && onChangePage(newPage);
+            }}
             className="px-3 py-1.5 rounded border border-slate-300 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Trang sau
