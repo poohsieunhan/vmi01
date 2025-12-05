@@ -72,9 +72,10 @@ export function useCompanyForm({ fetchCompanies }) {
     try {
       if (
         (mode === "create" || mode === "edit") &&
-        !formData.TenCongTy.trim()
+        !formData.TenCongTy.trim() && formData.MaSoThue.trim()
       ) {
         setFormError("Tên công ty là bắt buộc.");
+        setFormError("Mã số thuế là bắt buộc.");)
         setSubmitting(false);
         return;
       }

@@ -33,6 +33,14 @@ const Company = sequelize.define(
       type: DataTypes.STRING(25),
       allowNull: false,
     },
+    NguoiDaiDien: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
+    ChucVu: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
   },
   {
     tableName: "tblCompany", // Tên bảng trong database

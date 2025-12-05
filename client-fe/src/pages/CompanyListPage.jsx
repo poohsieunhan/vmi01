@@ -89,14 +89,14 @@ function CompanyListPage() {
                     onClick={() => openEdit(company)}
                     className="px-3 py-1 text-xs font-medium rounded bg-blue-500 text-white hover:bg-blue-600"
                   >
-                    Edit
+                    Sửa
                   </button>
                   <button
                     type="button"
                     onClick={() => openDelete(company)}
                     className="px-3 py-1 text-xs font-medium rounded bg-red-500 text-white hover:bg-red-600"
                   >
-                    Remove
+                    Xóa
                   </button>
                 </>
               )}

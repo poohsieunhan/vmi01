@@ -1,12 +1,15 @@
 // services/company.service.js
 const CompanyModel = require("../models/company.model");
-const {ErrorResponse, BadRequestError} = require("../core/error.response");
+const { ErrorResponse, BadRequestError } = require("../core/error.response");
+const RequestFormModel = require("../models/requestform.model");
 
 class CompanyService {
   // Tạo mới 1 Company
   static async createCompany(data) {
     const maSoThue = data.MaSoThue;
-    const existingCompany = await CompanyModel.findOne({ where: { MaSoThue: maSoThue } });
+    const existingCompany = await CompanyModel.findOne({
+      where: { MaSoThue: maSoThue },
+    });
     if (existingCompany) {
       throw new ErrorResponse("Company with this MaSoThue already exists.");
     }
@@ -57,6 +60,15 @@ class CompanyService {
   // Xóa 1 Company
   static async deleteCompany(id) {
     const company = await CompanyModel.findByPk(id);
+
+    const foundCompany = await RequestFormModel.count({
+      where: { CongtyId: id },
+    });
+    if (foundCompany > 0)
+      throw new ErrorResponse(
+        "Công ty đã tồn tại trong Phiếu yêu cầu. Không thể xóa!"
+      );
+
     if (!company) {
       return null;
     }

@@ -21,11 +21,7 @@ function CompanyFormModal({
       : "Xóa công ty";
 
   return (
-    <Modal
-      open={open}
-      title={title}
-      onClose={onClose}    
-    >
+    <Modal open={open} title={title} onClose={onClose}>
       {mode === "delete" && selectedCompany ? (
         <form onSubmit={onSubmit} className="space-y-4">
           <p className="text-sm text-slate-700">
@@ -34,7 +30,7 @@ function CompanyFormModal({
             (ID: {selectedCompany.Id})?
           </p>
           {formError && <p className="text-sm text-rose-600">{formError}</p>}
-          <div className="flex justify-end gap-2" >
+          <div className="flex justify-end gap-2">
             <button
               type="button"
               onClick={onClose}
@@ -66,31 +62,50 @@ function CompanyFormModal({
             value={formData.DiaChi}
             onChange={onChange}
           />
-          <MyInputField
-            label="Mã số thuế:"
-            name="MaSoThue"
-            value={formData.MaSoThue}
-            onChange={onChange}
-          />
-          <MyInputField
-            label="Email:"
-            name="Email"
-            type="email"
-            value={formData.Email}
-            onChange={onChange}
-          />
-          <MyInputField
-            label="Số điện thoại:"
-            name="Tel"
-            value={formData.Tel}
-            onChange={onChange}
-          />
-          <MyInputField
-            label="Fax:"
-            name="Fax"
-            value={formData.Fax}
-            onChange={onChange}
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <MyInputField
+              label="Người đại diện:"
+              name="NguoiDaiDien"
+              value={formData.NguoiDaiDien}
+              onChange={onChange}
+            />
+            <MyInputField
+              label="Chức vụ:"
+              name="ChucVu"
+              value={formData.ChucVu}
+              onChange={onChange}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <MyInputField
+              label="Mã số thuế: (*)"
+              name="MaSoThue"
+              value={formData.MaSoThue}
+              onChange={onChange}
+            />
+            <MyInputField
+              label="Email:"
+              name="Email"
+              type="email"
+              value={formData.Email}
+              onChange={onChange}
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <MyInputField
+              label="Số điện thoại:"
+              name="Tel"
+              value={formData.Tel}
+              onChange={onChange}
+            />
+            <MyInputField
+              label="Fax:"
+              name="Fax"
+              value={formData.Fax}
+              onChange={onChange}
+            />
+          </div>
 
           {formError && <p className="text-sm text-rose-600">{formError}</p>}
 

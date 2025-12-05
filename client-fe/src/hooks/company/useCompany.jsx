@@ -15,8 +15,8 @@ export function useCompanies(initialPage = 1, initialLimit = 10) {
       setLoading(true);
       setError("");
       const res = await companyApi.getAll({ page, limit });
-      console.log("fetchCompanies res:", res); // THÊM DÒNG NÀY
-      console.log("res.pagination:", res.pagination);
+      //console.log("fetchCompanies res:", res); 
+      //console.log("res.pagination:", res.pagination);
       setCompanies(res.data || []);
       setPagination(res.pagination || null);
     } catch (err) {
@@ -33,7 +33,7 @@ export function useCompanies(initialPage = 1, initialLimit = 10) {
   }, [initialPage, initialLimit]);
 
   const handleChangePage = (page) => {
-    console.log("handleChangePage -> goto:", page);
+    //console.log("handleChangePage -> goto:", page);
     fetchCompanies({ page, limit: pagination?.limit || initialLimit });
   };
 

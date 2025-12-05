@@ -1,12 +1,19 @@
 // src/components/company/companyColumns.js
 
 export const companyColumns = [
+  // {
+  //   id: "Id",
+  //   header: "ID",
+  //   accessor: "Id",
+  //   thClassName: "whitespace-nowrap text-center",
+  //   tdClassName: "whitespace-nowrap text-center",
+  // },
   {
-    id: "Id",
-    header: "ID",
-    accessor: "Id",
-    thClassName: "whitespace-nowrap text-center",
-    tdClassName: "whitespace-nowrap text-center",
+    id: "stt",
+    header: "STT",
+    thClassName: "w-12 text-center",
+    tdClassName: "text-center",
+    cell: (_row, _value, _rowIndex, displayIndex) => displayIndex,
   },
   {
     id: "TenCongTy",
@@ -43,6 +50,20 @@ export const companyColumns = [
     id: "Fax",
     header: "FAX",
     accessor: "Fax",
+    thClassName: "whitespace-nowrap",
+    tdClassName: "whitespace-nowrap",
+  },
+  {
+    id: "NguoiDaiDien",
+    header: "NGƯỜI ĐẠI ĐIỆN",
+    accessor: "NguoiDaiDien",
+    thClassName: "whitespace-nowrap",
+    tdClassName: "whitespace-nowrap",
+  },
+  {
+    id: "ChucVu",
+    header: "CHỨC VỤ",
+    accessor: "ChucVu",
     thClassName: "whitespace-nowrap",
     tdClassName: "whitespace-nowrap",
   },
