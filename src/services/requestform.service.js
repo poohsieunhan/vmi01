@@ -2,6 +2,8 @@ const RequestFormModel = require("../models/requestform.model");
 const RequestFormDetailModel = require("../models/requestformdetail.model");
 const { ErrorResponse, BadRequestError } = require("../core/error.response");
 const { Op } = require("sequelize");
+const CompanyModel = require("../models/company.model");
+
 
 class RequestFormService {
   static async createRequestForm(data) {
@@ -17,11 +19,14 @@ class RequestFormService {
     return rf;
   }
 
-  // Lấy danh sách Company
   static async getAllRequestForm({ page = 1, limit = 20 } = {}) {
     const offset = (page - 1) * limit;
 
     const { rows, count } = await RequestFormModel.findAndCountAll({
+      include: [       
+          { model: CompanyModel, as: "CongTy", attributes: ["Id", "TenCongTy"] },
+          { model: CompanyModel, as: "CongTySuDung", attributes: ["Id", "TenCongTy"] },        
+      ],
       offset,
       limit,
       order: [["Id", "DESC"]],

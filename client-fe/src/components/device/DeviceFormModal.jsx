@@ -1,33 +1,32 @@
-// src/components/company/CompanyFormModal.jsx
 import Modal from "../common/MyModal";
 import MyInputField from "../common/MyInputField";
 
-function CompanyFormModal({
+function DeviceFormModal({
   open,
   mode,
   formData,
   formError,
   submitting,
-  selectedCompany,
+  selectedDevice,
   onChange,
   onSubmit,
   onClose,
 }) {
   const title =
     mode === "create"
-      ? "Thêm công ty"
+      ? "Thêm thiết bị"
       : mode === "edit"
-      ? "Chỉnh sửa công ty"
-      : "Xóa công ty";
+      ? "Chỉnh sửa thiết bị"
+      : "Xóa thiết bị";
 
   return (
     <Modal open={open} title={title} onClose={onClose}>
-      {mode === "delete" && selectedCompany ? (
+      {mode === "delete" && selectedDevice ? (
         <form onSubmit={onSubmit} className="space-y-4">
           <p className="text-sm text-slate-700">
-            Bạn có chắc chắn muốn xóa công ty{" "}
-            <span className="font-semibold">{selectedCompany.TenCongTy}</span>{" "}
-            (ID: {selectedCompany.Id})?
+            Bạn có chắc chắn muốn xóa thiết bị{" "}
+            <span className="font-semibold">{selectedDevice.TenThietBi}</span>{" "}
+            (ID: {selectedDevice.Id})?
           </p>
           {formError && <p className="text-sm text-rose-600">{formError}</p>}
           <div className="flex justify-end gap-2">
@@ -51,62 +50,19 @@ function CompanyFormModal({
       ) : (
         <form onSubmit={onSubmit} className="space-y-4 text-left">
           <MyInputField
-            label="Tên công ty: (*)"
-            name="TenCongTy"
-            value={formData.TenCongTy}
+            label="Tên thiết bị: (*)"
+            name="TenThietBi"
+            value={formData.TenThietBi}
             onChange={onChange}
           />
           <MyInputField
-            label="Địa chỉ:"
-            name="DiaChi"
-            value={formData.DiaChi}
+            label="Mã thiết bị:"
+            name="MaThietBi"
+            value={formData.MaThietBi}
             onChange={onChange}
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <MyInputField
-              label="Người đại diện:"
-              name="NguoiDaiDien"
-              value={formData.NguoiDaiDien}             
-              onChange={onChange}
-            />
-            <MyInputField
-              label="Chức vụ:"
-              name="ChucVu"
-              value={formData.ChucVu}
-              onChange={onChange}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <MyInputField
-              label="Mã số thuế: (*)"
-              name="MaSoThue"
-              value={formData.MaSoThue}
-              onChange={onChange}
-            />
-            <MyInputField
-              label="Email:"
-              name="Email"
-              type="email"
-              value={formData.Email}
-              onChange={onChange}
-            />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <MyInputField
-              label="Số điện thoại:"
-              name="Tel"
-              value={formData.Tel}
-              onChange={onChange}
-            />
-            <MyInputField
-              label="Fax:"
-              name="Fax"
-              value={formData.Fax}
-              onChange={onChange}
-            />
-          </div>
-
+          
+        
           {formError && <p className="text-sm text-rose-600">{formError}</p>}
 
           <div className="flex justify-end gap-2">
@@ -136,4 +92,4 @@ function CompanyFormModal({
   );
 }
 
-export default CompanyFormModal;
+export default DeviceFormModal;

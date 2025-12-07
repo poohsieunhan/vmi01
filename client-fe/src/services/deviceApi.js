@@ -6,28 +6,28 @@ const api = axios.create({
   baseURL: API_BASE_URL,
 });
 
-const companyApi = {
+const deviceApi = {
   async getAll({ page = 1, limit = 10}) {
-    const res = await api.get("/company", {
+    const res = await api.get("/device", {
       params: { page, limit },
     });
     return res.data.metadata; // Trả về phần metadata chứa data và pagination
   },
 
   async add(data) {
-    const res = await api.post("/company", data);
+    const res = await api.post("/device", data);
     return res.data;
   },
 
   async update(id, data) {
-    const res = await api.put(`/company/${id}`, data);
+    const res = await api.put(`/device/${id}`, data);
     return res.data;
   },
 
   async delete(id) {
-    const res = await api.delete(`/company/${id}`);
+    const res = await api.delete(`/device/${id}`);
     return res.data;
   },
 };
 
-export default companyApi;
+export default deviceApi;

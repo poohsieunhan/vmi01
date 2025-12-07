@@ -1,28 +1,27 @@
-// src/pages/CompanyListPage.jsx
 import MyDataTable from "../components/common/MyDataTable";
-import CompanyFormModal from "../components/company/CompanyFormModal";
+import DeviceFormModal from "../components/device/DeviceFormModal"
 import MySearchInput from "../components/common/MySearchInput";
-import { useCompanies } from "../hooks/company/useCompany";
-import { useCompanyForm } from "../hooks/company/userCompanyForm";
-import { companyColumns } from "../components/company/companyColumns";
+import { useDevices } from "../hooks/device/useDevice"
+import { useDeviceForm } from "../hooks/device/useDeviceForm"
+import { deviceColumns } from "../components/device/deviceColumns";
 
-function CompanyListPage() {
+function DeviceListPage() {
   const {
-    companies,
-    filteredCompanies,
+    devices,
+    filteredDevices,
     pagination,
     loading,
     error,
     searchText,
     setSearchText,
-    fetchCompanies,
+    fetchDevices,
     handleChangePage,
-  } = useCompanies(1, 10);
+  } = useDevices(1, 10);
 
   const {
     open,
     mode,
-    selectedCompany,
+    selectedDevice,
     formData,
     formError,
     submitting,
@@ -32,7 +31,7 @@ function CompanyListPage() {
     closeModal,
     handleChange,
     handleSubmit,
-  } = useCompanyForm({ fetchCompanies });
+  } = useDeviceForm({ fetchDevices });
 
   return (
     <div className="min-h-screen bg-slate-100 px-4 py-6">
@@ -42,10 +41,10 @@ function CompanyListPage() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
             <div>
               <h1 className="text-2xl font-semibold text-slate-800">
-                Danh sách Công ty
+                Danh sách Thiết bị
               </h1>
               <p className="text-sm text-slate-500 mt-1">
-                Quản lý thông tin công ty: tên, địa chỉ, mã số thuế, liên hệ…
+                Quản lý thông tin thiết bị: tên, mã thiết bị…
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -53,13 +52,13 @@ function CompanyListPage() {
                 value={searchText}
                 onChange={setSearchText}
                 onClear={() => setSearchText("")}
-                placeholder="Tìm theo tên công ty, mã số thuế..."
+                placeholder="Tìm theo tên thiết bị, mã thiết bị..."
               />
               <button
                 onClick={openCreate}
                 className="inline-flex items-center px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium shadow hover:bg-indigo-700 transition"
               >
-                + Thêm công ty
+                + Thêm thiết bị
               </button>
             </div>
           </div>
@@ -77,23 +76,23 @@ function CompanyListPage() {
 
           {!loading && !error && (
             <MyDataTable
-              columns={companyColumns}
-              data={filteredCompanies}
+              columns={deviceColumns}
+              data={filteredDevices}
               pagination={pagination}
               onChangePage={handleChangePage}
               actionsHeader="THAO TÁC"
-              renderActions={(company) => (
+              renderActions={(device) => (
                 <>
                   <button
                     type="button"
-                    onClick={() => openEdit(company)}
+                    onClick={() => openEdit(device)}
                     className="px-3 py-1 text-xs font-medium rounded bg-blue-500 text-white hover:bg-blue-600"
                   >
                     Sửa
                   </button>
                   <button
                     type="button"
-                    onClick={() => openDelete(company)}
+                    onClick={() => openDelete(device)}
                     className="px-3 py-1 text-xs font-medium rounded bg-red-500 text-white hover:bg-red-600"
                   >
                     Xóa
@@ -106,13 +105,13 @@ function CompanyListPage() {
       </div>
 
       {/* Modal form */}
-      <CompanyFormModal
+      <DeviceFormModal
         open={open}
         mode={mode}
         formData={formData}
         formError={formError}
         submitting={submitting}
-        selectedCompany={selectedCompany}
+        selectedDevice={selectedDevice}
         onChange={handleChange}
         onSubmit={(e) => handleSubmit(e, pagination)}
         onClose={closeModal}
@@ -121,4 +120,4 @@ function CompanyListPage() {
   );
 }
 
-export default CompanyListPage;
+export default DeviceListPage;

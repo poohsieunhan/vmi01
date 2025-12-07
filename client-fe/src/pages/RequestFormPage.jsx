@@ -1,28 +1,29 @@
-// src/pages/CompanyListPage.jsx
 import MyDataTable from "../components/common/MyDataTable";
-import CompanyFormModal from "../components/company/CompanyFormModal";
+import RequestFormModal from "../components/requestform/RequestFormModal"
 import MySearchInput from "../components/common/MySearchInput";
-import { useCompanies } from "../hooks/company/useCompany";
-import { useCompanyForm } from "../hooks/company/userCompanyForm";
-import { companyColumns } from "../components/company/companyColumns";
+import { useRequest } from "../hooks/requestform/useRequest"
+import { useRequestForm } from "../hooks/requestform/useRequestForm"
+import { requestFormColumns } from "../components/requestform/requestFormColumns";
+import { useState, useEffect } from "react";
+import companyApi from "../services/companyApi";
 
-function CompanyListPage() {
+function RequestFormPage() {
   const {
-    companies,
-    filteredCompanies,
+    requestForms,
+    filteredRequestForms,
     pagination,
     loading,
     error,
     searchText,
     setSearchText,
-    fetchCompanies,
+    fetchRequestForms,
     handleChangePage,
-  } = useCompanies(1, 10);
+  } = useRequest(1, 10);
 
   const {
     open,
     mode,
-    selectedCompany,
+    selectedRequestForm,
     formData,
     formError,
     submitting,
@@ -32,7 +33,23 @@ function CompanyListPage() {
     closeModal,
     handleChange,
     handleSubmit,
-  } = useCompanyForm({ fetchCompanies });
+  } = useRequestForm({ fetchRequestForms });
+
+  const [companies, setCompanies] = useState([]);
+
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const result = await companyApi.getAll({ page: 1, limit: 1000 });
+        setCompanies(result.data || []); 
+        console.log(result)
+      } catch (err) {
+        console.error("Failed to load companies", err);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
 
   return (
     <div className="min-h-screen bg-slate-100 px-4 py-6">
@@ -42,10 +59,10 @@ function CompanyListPage() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
             <div>
               <h1 className="text-2xl font-semibold text-slate-800">
-                Danh sách Công ty
+                Danh sách Phiếu
               </h1>
               <p className="text-sm text-slate-500 mt-1">
-                Quản lý thông tin công ty: tên, địa chỉ, mã số thuế, liên hệ…
+                Quản lý thông tin Phiếu: tên, mã thiết bị…
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -53,13 +70,13 @@ function CompanyListPage() {
                 value={searchText}
                 onChange={setSearchText}
                 onClear={() => setSearchText("")}
-                placeholder="Tìm theo tên công ty, mã số thuế..."
+                placeholder="Tìm theo số phiếu, ngày nhận..."
               />
               <button
                 onClick={openCreate}
                 className="inline-flex items-center px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium shadow hover:bg-indigo-700 transition"
               >
-                + Thêm công ty
+                + Thêm Phiếu
               </button>
             </div>
           </div>
@@ -77,23 +94,23 @@ function CompanyListPage() {
 
           {!loading && !error && (
             <MyDataTable
-              columns={companyColumns}
-              data={filteredCompanies}
+              columns={requestFormColumns}
+              data={filteredRequestForms}
               pagination={pagination}
               onChangePage={handleChangePage}
               actionsHeader="THAO TÁC"
-              renderActions={(company) => (
+              renderActions={(requestForm) => (
                 <>
                   <button
                     type="button"
-                    onClick={() => openEdit(company)}
+                    onClick={() => openEdit(requestForm)}
                     className="px-3 py-1 text-xs font-medium rounded bg-blue-500 text-white hover:bg-blue-600"
                   >
                     Sửa
                   </button>
                   <button
                     type="button"
-                    onClick={() => openDelete(company)}
+                    onClick={() => openDelete(requestForm)}
                     className="px-3 py-1 text-xs font-medium rounded bg-red-500 text-white hover:bg-red-600"
                   >
                     Xóa
@@ -106,13 +123,14 @@ function CompanyListPage() {
       </div>
 
       {/* Modal form */}
-      <CompanyFormModal
+      <RequestFormModal
         open={open}
         mode={mode}
         formData={formData}
         formError={formError}
         submitting={submitting}
-        selectedCompany={selectedCompany}
+        selectedRequestForm={selectedRequestForm}
+        companies={companies}
         onChange={handleChange}
         onSubmit={(e) => handleSubmit(e, pagination)}
         onClose={closeModal}
@@ -121,4 +139,4 @@ function CompanyListPage() {
   );
 }
 
-export default CompanyListPage;
+export default RequestFormPage;

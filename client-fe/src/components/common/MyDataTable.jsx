@@ -57,7 +57,7 @@ function MyDataTable({
   };
 
   return (
-    <div className="mt-6 overflow-x-auto">
+    <div className="mt-6 overflow-x-auto w-full">
       <div className="inline-block min-w-full align-middle rounded-lg overflow-hidden shadow-sm">
         <table className="min-w-full text-sm text-slate-700 border border-slate-200 border-collapse bg-white">
           {/* HEADER */}

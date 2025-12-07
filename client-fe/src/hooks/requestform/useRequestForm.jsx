@@ -1,25 +1,30 @@
-// src/hooks/useCompanyForm.js
 import { useState } from "react";
-import companyApi from "../../services/companyApi";
+import requestFormApi from "../../services/requestFormApi";
 import toast from "react-hot-toast";
+import { toInputDate } from "../../utis/dateUltis";
 
 function initialForm() {
   return {
-    TenCongTy: "",
-    DiaChi: "",
-    NguoiDaiDien:'',
-    ChucVu:'',
-    MaSoThue: "",
-    Email: "",
-    Tel: "",
-    Fax: "",
+    SoPhieu: "",
+    NgayNhan: "",
+    NgayTraDuKien:"",
+    CongTyId: "",
+    CongTySuDungId: "",
+    ThucHienTai:false,
+    YeuCauGiay:false,
+    YeuCauHieuChinh:false,
+    CoSo:false,
+    YeuCauPhuongPhap:false,
+    HinhThucGiaoNhan:false,
+    SoBG: "",
+    NgayTraThucTe:"",
   };
 }
 
-export function useCompanyForm({ fetchCompanies }) {
+export function useRequestForm({ fetchRequestForms }) {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState("create"); // 'create' | 'edit' | 'delete'
-  const [selectedCompany, setSelectedCompany] = useState(null);
+  const [selectedRequestForm, setSelectedRequestForm] = useState(null);
   const [formData, setFormData] = useState(initialForm());
   const [formError, setFormError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -27,32 +32,37 @@ export function useCompanyForm({ fetchCompanies }) {
   // open/close modal
   const openCreate = () => {
     setMode("create");
-    setSelectedCompany(null);
+    setSelectedRequestForm(null);
     setFormData(initialForm());
     setFormError("");
     setOpen(true);
   };
 
-  const openEdit = (company) => {
+  const openEdit = (requestForm) => {
     setMode("edit");
-    setSelectedCompany(company);
+    setSelectedRequestForm(requestForm);
     setFormData({
-      TenCongTy: company.TenCongTy || "",
-      DiaChi: company.DiaChi || "",
-      NguoiDaiDien: company.NguoiDaiDien || "",
-      ChucVu: company.ChucVu || "",
-      MaSoThue: company.MaSoThue || "",
-      Email: company.Email || "",
-      Tel: company.Tel || "",
-      Fax: company.Fax || "",
+      SoPhieu: requestForm.SoPhieu || "",
+      NgayNhan: toInputDate(requestForm.NgayNhan) || "",
+      CongTyId: requestForm.CongTy?.Id || "",
+      CongTySuDungId: requestForm.CongTySuDung?.Id || "",
+      NgayTraDuKien: toInputDate(requestForm.NgayTraDuKien) ||requestForm.NgayTraDuKien || "",
+      ThucHienTai: !!requestForm.ThucHienTai || "",
+      YeuCauGiay: !!requestForm.YeuCauGiay || "",
+      YeuCauHieuChinh: !!requestForm.YeuCauHieuChinh || "",
+      CoSo: !!requestForm.CoSo || "",
+      YeuCauPhuongPhap: !!requestForm.YeuCauPhuongPhap || "",
+      HinhThucGiaoNhan: !!requestForm.HinhThucGiaoNhan || "",
+      SoBG: requestForm.SoBG || "",
+      NgayTraThucTe: toInputDate(requestForm.NgayTraThucTe) || "",
     });
     setFormError("");
     setOpen(true);
   };
 
-  const openDelete = (company) => {
+  const openDelete = (requestForm) => {
     setMode("delete");
-    setSelectedCompany(company);
+    setSelectedRequestForm(requestForm);
     setFormError("");
     setOpen(true);
   };
@@ -60,7 +70,7 @@ export function useCompanyForm({ fetchCompanies }) {
   const closeModal = () => {
     if (submitting) return;
     setOpen(false);
-    setSelectedCompany(null);
+    setSelectedRequestForm(null);
   };
 
 const handleChange = (e) => {
@@ -91,60 +101,68 @@ const handleChange = (e) => {
     try {
       if (
         (mode === "create" || mode === "edit") &&
-        !formData.TenCongTy.trim() && formData.MaSoThue.trim()
+        !formData.SoPhieu.trim()
       ) {
-        setFormError("Tên công ty là bắt buộc.");
-        setFormError("Mã số thuế là bắt buộc.");
+        setFormError("Số phiếu là bắt buộc.");
         setSubmitting(false);
         return;
       }
 
+      const buildPayload = (data) => ({
+  ...data,
+  ThucHienTai: data.ThucHienTai ? 1 : 0,
+  YeuCauGiay: data.YeuCauGiay ? 1 : 0,
+  YeuCauHieuChinh: data.YeuCauHieuChinh ? 1 : 0,
+  CoSo: data.CoSo ? 1 : 0,
+  YeuCauPhuongPhap: data.YeuCauPhuongPhap ? 1 : 0,
+});
+
       if (mode === "create") {
         try {
-          await companyApi.add(formData);
-          await fetchCompanies({ page: 1, limit: 10 });
+          await requestFormApi.add(buildPayload(formData));
+          await fetchRequestForms({ page: 1, limit: 10 });
           setOpen(false);
-          toast.success("Thêm mới công ty thành công.");
+          toast.success("Thêm mới phiếu thành công.");
         } catch (error) {
           const msg =
             error.response?.data?.message ||
-            "Có lỗi xảy ra khi thêm mới công ty.";
+            "Có lỗi xảy ra khi thêm mới phiếu.";
           setFormError(msg);
           toast.error(msg);
         }
       }
 
-      if (mode === "edit" && selectedCompany) {
+      if (mode === "edit" && selectedRequestForm) {
         try {
-          await companyApi.update(selectedCompany.Id, formData);
+          await requestFormApi.update(selectedRequestForm.Id, buildPayload(formData));
           console.log(formData)
-          await fetchCompanies({
+          await fetchRequestForms({
             page: pagination?.page || 1,
             limit: pagination?.limit || 10,
           });
           setOpen(false);
-          toast.success("Cập nhật công ty thành công.");
+          toast.success("Cập nhật phiếu thành công.");
         } catch (error) {
           const msg =
             error.response?.data?.message ||
-            "Có lỗi xảy ra khi cập nhật công ty.";
+            "Có lỗi xảy ra khi cập nhật phiếu.";
           setFormError(msg);
           toast.error(msg);
         }
       }
 
-      if (mode === "delete" && selectedCompany) {
+      if (mode === "delete" && selectedRequestForm) {
         try {
-          await companyApi.delete(selectedCompany.Id);
-          await fetchCompanies({
+          await requestFormApi.delete(selectedRequestForm.Id);
+          await fetchRequestForms({
             page: 1,
             limit: pagination?.limit || 10,
           });
           setOpen(false);
-          toast.success("Xóa công ty thành công.");
+          toast.success("Xóa phiếu thành công.");
         } catch (error) {
           const msg =
-            error.response?.data?.message || "Có lỗi xảy ra khi xóa công ty.";
+            error.response?.data?.message || "Có lỗi xảy ra khi xóa phiếu.";
           setFormError(msg);
           toast.error(msg);
         }
@@ -162,7 +180,7 @@ const handleChange = (e) => {
     // state
     open,
     mode,
-    selectedCompany,
+    selectedRequestForm,
     formData,
     formError,
     submitting,

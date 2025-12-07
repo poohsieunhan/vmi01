@@ -1,25 +1,19 @@
 // src/hooks/useCompanyForm.js
 import { useState } from "react";
-import companyApi from "../../services/companyApi";
+import deviceApi from "../../services/deviceApi";
 import toast from "react-hot-toast";
 
 function initialForm() {
   return {
-    TenCongTy: "",
-    DiaChi: "",
-    NguoiDaiDien:'',
-    ChucVu:'',
-    MaSoThue: "",
-    Email: "",
-    Tel: "",
-    Fax: "",
+    TenThietBi: "",
+    MaThietBi: "",
   };
 }
 
-export function useCompanyForm({ fetchCompanies }) {
+export function useDeviceForm({ fetchDevices }) {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState("create"); // 'create' | 'edit' | 'delete'
-  const [selectedCompany, setSelectedCompany] = useState(null);
+  const [selectedDevice, setSelectedDevice] = useState(null);
   const [formData, setFormData] = useState(initialForm());
   const [formError, setFormError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -33,26 +27,20 @@ export function useCompanyForm({ fetchCompanies }) {
     setOpen(true);
   };
 
-  const openEdit = (company) => {
+  const openEdit = (device) => {
     setMode("edit");
-    setSelectedCompany(company);
+    setSelectedDevice(device);
     setFormData({
-      TenCongTy: company.TenCongTy || "",
-      DiaChi: company.DiaChi || "",
-      NguoiDaiDien: company.NguoiDaiDien || "",
-      ChucVu: company.ChucVu || "",
-      MaSoThue: company.MaSoThue || "",
-      Email: company.Email || "",
-      Tel: company.Tel || "",
-      Fax: company.Fax || "",
+      TenThietBi: device.TenThietBi || "",
+      MaThietBi: device.MaThietBi || "",
     });
     setFormError("");
     setOpen(true);
   };
 
-  const openDelete = (company) => {
+  const openDelete = (device) => {
     setMode("delete");
-    setSelectedCompany(company);
+    setSelectedDevice(device);
     setFormError("");
     setOpen(true);
   };
@@ -60,7 +48,7 @@ export function useCompanyForm({ fetchCompanies }) {
   const closeModal = () => {
     if (submitting) return;
     setOpen(false);
-    setSelectedCompany(null);
+    setSelectedDevice(null);
   };
 
 const handleChange = (e) => {
@@ -91,60 +79,59 @@ const handleChange = (e) => {
     try {
       if (
         (mode === "create" || mode === "edit") &&
-        !formData.TenCongTy.trim() && formData.MaSoThue.trim()
+        !formData.TenThietBi.trim()
       ) {
-        setFormError("Tên công ty là bắt buộc.");
-        setFormError("Mã số thuế là bắt buộc.");
+        setFormError("Tên thiết bị là bắt buộc.");
         setSubmitting(false);
         return;
       }
 
       if (mode === "create") {
         try {
-          await companyApi.add(formData);
-          await fetchCompanies({ page: 1, limit: 10 });
+          await deviceApi.add(formData);
+          await fetchDevices({ page: 1, limit: 10 });
           setOpen(false);
-          toast.success("Thêm mới công ty thành công.");
+          toast.success("Thêm mới thiết bị thành công.");
         } catch (error) {
           const msg =
             error.response?.data?.message ||
-            "Có lỗi xảy ra khi thêm mới công ty.";
+            "Có lỗi xảy ra khi thêm mới thiết bị.";
           setFormError(msg);
           toast.error(msg);
         }
       }
 
-      if (mode === "edit" && selectedCompany) {
+      if (mode === "edit" && selectedDevice) {
         try {
-          await companyApi.update(selectedCompany.Id, formData);
+          await deviceApi.update(selectedDevice.Id, formData);
           console.log(formData)
-          await fetchCompanies({
+          await fetchDevices({
             page: pagination?.page || 1,
             limit: pagination?.limit || 10,
           });
           setOpen(false);
-          toast.success("Cập nhật công ty thành công.");
+          toast.success("Cập nhật thiết bị thành công.");
         } catch (error) {
           const msg =
             error.response?.data?.message ||
-            "Có lỗi xảy ra khi cập nhật công ty.";
+            "Có lỗi xảy ra khi cập nhật thiết bị.";
           setFormError(msg);
           toast.error(msg);
         }
       }
 
-      if (mode === "delete" && selectedCompany) {
+      if (mode === "delete" && selectedDevice) {
         try {
-          await companyApi.delete(selectedCompany.Id);
-          await fetchCompanies({
+          await deviceApi.delete(selectedDevice.Id);
+          await fetchDevices({
             page: 1,
             limit: pagination?.limit || 10,
           });
           setOpen(false);
-          toast.success("Xóa công ty thành công.");
+          toast.success("Xóa thiết bị thành công.");
         } catch (error) {
           const msg =
-            error.response?.data?.message || "Có lỗi xảy ra khi xóa công ty.";
+            error.response?.data?.message || "Có lỗi xảy ra khi xóa thiết bị.";
           setFormError(msg);
           toast.error(msg);
         }
@@ -162,7 +149,7 @@ const handleChange = (e) => {
     // state
     open,
     mode,
-    selectedCompany,
+    selectedDevice,
     formData,
     formError,
     submitting,

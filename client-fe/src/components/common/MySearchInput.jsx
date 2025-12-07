@@ -32,7 +32,7 @@ function SearchInput({
           <button
             type="button"
             onClick={onClear}
-            className="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 text-sm"
+            className="absolute bg-red-100 inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 text-sm"
           >
             ✕
           </button>
