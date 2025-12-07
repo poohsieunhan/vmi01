@@ -59,6 +59,23 @@ class RequestFormController {
     }
   };
 
+  getRequestFormById = async (req, res, next) => {
+    try {
+      const { Id } = req.params;
+      const rf = await RequestFormService.getRfById(Id);
+      new SuccessResponse({
+        message: "RequestForm retrieved successfully",
+        metadata: rf,
+      }).send(res);
+    } catch (error) {
+      const status = error.statusCode || 500;
+      res.status(status).json({
+        status: "error",
+        message: error.message || "Internal Server Error",
+      })
+    }
+  }
+
   deleteRequestForm = async (req, res, next) => {
     try {
       const { Id } = req.params;

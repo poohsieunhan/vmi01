@@ -8,6 +8,7 @@ const router = express.Router();
 
 //router.get("", asyncHandler(requestFormController.getAllRequestForm));
 router.get("/:Id", asyncHandler(requestFormDetailController.getRfdById));
+router.get("/:RequestFormId", asyncHandler(requestFormDetailController.getRFDByRFId));
 router.post(
   "",
   asyncHandler(requestFormDetailController.createRequestFormDetail)

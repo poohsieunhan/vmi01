@@ -53,6 +53,14 @@ class RequestFormService {
     return rf; // có thể null nếu không tìm thấy
   }
 
+  static async getRfById(Id) {
+    const rf = await RequestFormModel.findByPk(id)
+     if (!rf) {
+      return null;
+    }
+    return rf; 
+  }
+
   // Cập nhật 1 Company
   static async updateRequestForm(id, data) {
     //console.log("UpdateCompany - data:", data);

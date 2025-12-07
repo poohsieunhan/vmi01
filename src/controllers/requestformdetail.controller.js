@@ -30,6 +30,15 @@ class RequestFormDetailController {
     }).send(res);
   };
 
+  getRFDByRFId = async (req, res, next) => {
+    const { RequestFormId } = req.params;
+    const rfd = await RequestFormDetailService.getRFDByRFId(RequestFormId);
+    new SuccessResponse({
+      message: "RequestFormDetail retrieved successfully",
+      metadata: rfd,
+    }).send(res);
+  };
+
   updateRequestFormDetail = async (req, res, next) => {
     const { Id } = req.params;
     const updatedRfd = await RequestFormDetailService.updateRequestFormDetail(

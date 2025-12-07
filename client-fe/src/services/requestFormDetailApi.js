@@ -6,34 +6,29 @@ const api = axios.create({
   baseURL: API_BASE_URL,
 });
 
-const requestFormApi = {
+const requestFormDetailApi = {
   async getAll({ page = 1, limit = 10}) {
-    const res = await api.get("/requestform", {
+    const res = await api.get("/requestformdetail", {
       params: { page, limit },
     });
     console.log(res);
     return res.data.metadata; // Trả về phần metadata chứa data và pagination
   },
 
-  async getById(id) {
-    const res = await api.get(`/requestform/${id}`);
-    return res.data.metadata;
-  },
-
   async add(data) {
-    const res = await api.post("/requestform", data);
+    const res = await api.post("/requestformdetail", data);
     return res.data;
   },
 
   async update(id, data) {
-    const res = await api.put(`/requestform/${id}`, data);
+    const res = await api.put(`/requestformdetail/${id}`, data);
     return res.data;
   },
 
   async delete(id) {
-    const res = await api.delete(`/requestform/${id}`);
+    const res = await api.delete(`/requestformdetail/${id}`);
     return res.data;
   },
 };
 
-export default requestFormApi;
+export default requestFormDetailApi;

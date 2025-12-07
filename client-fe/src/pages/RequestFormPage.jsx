@@ -6,6 +6,7 @@ import { useRequestForm } from "../hooks/requestform/useRequestForm"
 import { requestFormColumns } from "../components/requestform/requestFormColumns";
 import { useState, useEffect } from "react";
 import companyApi from "../services/companyApi";
+import { useNavigate } from "react-router-dom";
 
 function RequestFormPage() {
   const {
@@ -36,6 +37,8 @@ function RequestFormPage() {
   } = useRequestForm({ fetchRequestForms });
 
   const [companies, setCompanies] = useState([]);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -101,6 +104,13 @@ function RequestFormPage() {
               actionsHeader="THAO TÁC"
               renderActions={(requestForm) => (
                 <>
+                <button
+                    type="button"
+                    onClick={() => navigate(`/requestformdetail/${requestForm.Id}`)}
+                    className="px-3 py-1 text-xs font-medium rounded bg-blue-500 text-white hover:bg-blue-600"
+                  >
+                    Thêm chi tiết phiếu
+                  </button>
                   <button
                     type="button"
                     onClick={() => openEdit(requestForm)}

@@ -30,6 +30,16 @@ class RequestFormDetailService {
   //     };
   //   }
 
+  static async getRFDByRFId(rfId) {
+    const rfd = await RequestFormDetailModel.findAll({
+      where: {
+        RequestFormId: rfId,
+      },
+    });
+    if(!rfd) return null;
+    return rfd; // có thể null nếu không tìm thấy
+  }
+
   // Lấy detail 1 Company theo SoPhieu
   static async getRfdById(id) {
     const rf = await RequestFormDetailModel.findOne({ where: { Id: id } });
