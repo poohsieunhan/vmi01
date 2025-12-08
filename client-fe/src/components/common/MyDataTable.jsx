@@ -20,6 +20,9 @@ function MyDataTable({
   const limit = hasPagination
     ? Number(pagination.limit || data.length || 0)
     : data.length || 0;
+  
+    //Lọc bỏ các phần tử null / undefined / false...
+  const cleanedData = Array.isArray(data) ? data.filter(Boolean) : [];
 
   // Offset để tính STT global
   const startIndexOffset = (page - 1) * (limit || 0);
@@ -84,7 +87,7 @@ function MyDataTable({
 
           {/* BODY */}
           <tbody>
-            {data.length === 0 && (
+            {cleanedData.length === 0 && (
               <tr>
                 <td
                   colSpan={columns.length + (hasActions ? 1 : 0)}
@@ -95,12 +98,13 @@ function MyDataTable({
               </tr>
             )}
 
-            {data.map((row, rowIndex) => {
+            {cleanedData.map((row, rowIndex) => {
               const displayIndex = startIndexOffset + rowIndex + 1;
 
               return (
                 <tr
-                  key={row.Id ?? row.id ?? rowIndex}
+                  //key={row.Id ?? row.id ?? rowIndex}
+                  key={row.Id ?? row.id ?? `row-${rowIndex}`}
                   className="odd:bg-white even:bg-slate-100 hover:bg-slate-300 transition-colors"
                 >
                   {columns.map((col) => {

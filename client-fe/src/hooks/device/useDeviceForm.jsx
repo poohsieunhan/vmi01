@@ -21,7 +21,7 @@ export function useDeviceForm({ fetchDevices }) {
   // open/close modal
   const openCreate = () => {
     setMode("create");
-    setSelectedCompany(null);
+    setSelectedDevice(null);
     setFormData(initialForm());
     setFormError("");
     setOpen(true);

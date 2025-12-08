@@ -14,8 +14,10 @@ import deviceStatusApi from "../services/devicestatusApi";
 import labApi from "../services/labApi";
 import MyComboBox from "../components/common/MyComboBox";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function RequestFormDetailPage() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [requestForm, setRequestForm] = useState(null);
   const [details, setDetails] = useState([]);
@@ -167,11 +169,10 @@ function RequestFormDetailPage() {
         ...detailForm,
         RequestFormId: rfId,
       };
-
-      // Giả sử service có hàm create:
       const newDetail = await requestFormDetailApi.add(payload);
 
-      // Nếu API trả về object chi tiết vừa tạo
+       const reloadRFD = await fetchRequestFormDetails(rfId);
+      
       setDetails((prev) => [...prev, newDetail]);
 
       // Reset form để nhập thiết bị khác
@@ -209,10 +210,8 @@ function RequestFormDetailPage() {
   useEffect(() => {
     if (!id) return;
     const rfId = parseInt(id);
-    //setSelectdRF(rfId);
     // gọi API lấy header phiếu
     fetchRequestFormById(rfId);
-
     // gọi API lấy danh sách chi tiết
     fetchRequestFormDetails(rfId);
   }, [id]);
@@ -363,9 +362,12 @@ function RequestFormDetailPage() {
       </div>
 
       {/* NÚT SAVE CUỐI CÙNG */}
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-2">
         <button className="px-4 py-2 bg-indigo-600 text-white rounded">
           Lưu chi tiết phiếu
+        </button>
+        <button onClick={() => navigate("/requestform")}className="px-4 py-2 bg-indigo-600 text-white rounded">
+          Quay lại danh sách phiếu
         </button>
       </div>
     </div>
