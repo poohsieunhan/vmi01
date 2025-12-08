@@ -22,7 +22,9 @@ function MyDataTable({
     : data.length || 0;
   
     //Lọc bỏ các phần tử null / undefined / false...
-  const cleanedData = Array.isArray(data) ? data.filter(Boolean) : [];
+  const cleanedData = Array.isArray(data)
+    ? data.filter((row) => row && (row.Id != null || row.id != null))
+    : [];
 
   // Offset để tính STT global
   const startIndexOffset = (page - 1) * (limit || 0);
@@ -48,14 +50,14 @@ function MyDataTable({
   const handlePrevPage = () => {
     if (!hasPagination || pagination.page <= 1) return;
     const newPage = pagination.page - 1;
-    console.log("MyDataTable: click Prev ->", newPage);
+    //console.log("MyDataTable: click Prev ->", newPage);
     onChangePage && onChangePage(newPage);
   };
 
   const handleNextPage = () => {
     if (!hasPagination || pagination.page >= pagination.totalPages) return;
     const newPage = pagination.page + 1;
-    console.log("MyDataTable: click Next ->", newPage);
+    //console.log("MyDataTable: click Next ->", newPage);
     onChangePage && onChangePage(newPage);
   };
 
