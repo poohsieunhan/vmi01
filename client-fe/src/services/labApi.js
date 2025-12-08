@@ -6,11 +6,11 @@ const api = axios.create({
   baseURL: API_BASE_URL,
 });
 
-const deviceApi = {
+const labApi = {
   async getAll(options = {}) {
     const { page = 1, limit = 10 } = options;
 
-    const res = await api.get("/device", {
+    const res = await api.get("/lab", {
       params: { page, limit },
     });
 
@@ -18,19 +18,19 @@ const deviceApi = {
   },
 
   async add(data) {
-    const res = await api.post("/device", data);
+    const res = await api.post("/lab", data);
     return res.data;
   },
 
   async update(id, data) {
-    const res = await api.put(`/device/${id}`, data);
+    const res = await api.put(`/lab/${id}`, data);
     return res.data;
   },
 
   async delete(id) {
-    const res = await api.delete(`/device/${id}`);
+    const res = await api.delete(`/lab/${id}`);
     return res.data;
   },
 };
 
-export default deviceApi;
+export default labApi;

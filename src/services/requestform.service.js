@@ -4,7 +4,6 @@ const { ErrorResponse, BadRequestError } = require("../core/error.response");
 const { Op } = require("sequelize");
 const CompanyModel = require("../models/company.model");
 
-
 class RequestFormService {
   static async createRequestForm(data) {
     const soPhieu = data.SoPhieu;
@@ -23,9 +22,13 @@ class RequestFormService {
     const offset = (page - 1) * limit;
 
     const { rows, count } = await RequestFormModel.findAndCountAll({
-      include: [       
-          { model: CompanyModel, as: "CongTy", attributes: ["Id", "TenCongTy"] },
-          { model: CompanyModel, as: "CongTySuDung", attributes: ["Id", "TenCongTy"] },        
+      include: [
+        { model: CompanyModel, as: "CongTy", attributes: ["Id", "TenCongTy"] },
+        {
+          model: CompanyModel,
+          as: "CongTySuDung",
+          attributes: ["Id", "TenCongTy"],
+        },
       ],
       offset,
       limit,
@@ -54,18 +57,17 @@ class RequestFormService {
   }
 
   static async getRfById(Id) {
-    const rf = await RequestFormModel.findByPk(id)
-     if (!rf) {
+    const rf = await RequestFormModel.findByPk(Id);
+    if (!rf) {
       return null;
     }
-    return rf; 
+    return rf;
   }
 
   // Cập nhật 1 Company
   static async updateRequestForm(id, data) {
     //console.log("UpdateCompany - data:", data);
     //console.log("UpdateRequestForm - id:", id);
-    
 
     const rf = await RequestFormModel.findByPk(id);
     if (!rf) {

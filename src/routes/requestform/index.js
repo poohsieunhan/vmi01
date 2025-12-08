@@ -11,10 +11,7 @@ router.get(
   "/:SoPhieu",
   asyncHandler(requestFormController.getRequestFormBySoPhieu)
 );
-router.get(
-  "/:Id",
-  asyncHandler(requestFormController.getRequestFormById)
-);
+router.get("/rfid/:Id", asyncHandler(requestFormController.getRequestFormById));
 router.post("", asyncHandler(requestFormController.createRequestForm));
 router.put("/:Id", asyncHandler(requestFormController.updateRequestForm));
 router.delete("/:Id", asyncHandler(requestFormController.deleteRequestForm));

@@ -7,8 +7,8 @@ function initialForm() {
   return {
     TenCongTy: "",
     DiaChi: "",
-    NguoiDaiDien:'',
-    ChucVu:'',
+    NguoiDaiDien: "",
+    ChucVu: "",
     MaSoThue: "",
     Email: "",
     Tel: "",
@@ -39,8 +39,6 @@ export function useCompanyForm({ fetchCompanies }) {
     setFormData({
       TenCongTy: company.TenCongTy || "",
       DiaChi: company.DiaChi || "",
-      NguoiDaiDien: company.NguoiDaiDien || "",
-      ChucVu: company.ChucVu || "",
       MaSoThue: company.MaSoThue || "",
       Email: company.Email || "",
       Tel: company.Tel || "",
@@ -63,25 +61,10 @@ export function useCompanyForm({ fetchCompanies }) {
     setSelectedCompany(null);
   };
 
-const handleChange = (e) => {
-  const { name, type, value, checked } = e.target;
-
-  let newValue;
-
-  if (type === "checkbox") {
-    newValue = checked;
-  } else if (type === "number") {
-    newValue = value === "" ? "" : Number(value);
-  } else {
-    newValue = value;
-  }
-
-  setFormData((prev) => ({
-    ...prev,
-    [name]: newValue,
-  }));
-};
-
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e, pagination) => {
     e.preventDefault();
@@ -91,7 +74,8 @@ const handleChange = (e) => {
     try {
       if (
         (mode === "create" || mode === "edit") &&
-        !formData.TenCongTy.trim() && formData.MaSoThue.trim()
+        !formData.TenCongTy.trim() &&
+        formData.MaSoThue.trim()
       ) {
         setFormError("Tên công ty là bắt buộc.");
         setFormError("Mã số thuế là bắt buộc.");
@@ -117,7 +101,6 @@ const handleChange = (e) => {
       if (mode === "edit" && selectedCompany) {
         try {
           await companyApi.update(selectedCompany.Id, formData);
-          console.log(formData)
           await fetchCompanies({
             page: pagination?.page || 1,
             limit: pagination?.limit || 10,

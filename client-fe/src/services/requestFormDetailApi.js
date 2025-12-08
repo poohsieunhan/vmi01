@@ -7,12 +7,17 @@ const api = axios.create({
 });
 
 const requestFormDetailApi = {
-  async getAll({ page = 1, limit = 10}) {
+  async getAll({ page = 1, limit = 10 }) {
     const res = await api.get("/requestformdetail", {
       params: { page, limit },
     });
     console.log(res);
     return res.data.metadata; // Trả về phần metadata chứa data và pagination
+  },
+
+  async getAllByRFId(id) {
+    const res = await api.get(`/requestformdetail/rfd/${id}`);
+    return res.data.metadata;
   },
 
   async add(data) {

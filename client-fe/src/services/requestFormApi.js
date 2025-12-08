@@ -7,7 +7,7 @@ const api = axios.create({
 });
 
 const requestFormApi = {
-  async getAll({ page = 1, limit = 10}) {
+  async getAll({ page = 1, limit = 10 }) {
     const res = await api.get("/requestform", {
       params: { page, limit },
     });
@@ -16,7 +16,7 @@ const requestFormApi = {
   },
 
   async getById(id) {
-    const res = await api.get(`/requestform/${id}`);
+    const res = await api.get(`/requestform/rfid/${id}`);
     return res.data.metadata;
   },
 

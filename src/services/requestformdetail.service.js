@@ -2,6 +2,9 @@
 const RequestFormDetailModel = require("../models/requestformdetail.model");
 const { ErrorResponse, BadRequestError } = require("../core/error.response");
 const { Op } = require("sequelize");
+const DeviceStatus = require("../models/devicestatus.model");
+const Device = require("../models/device.model");
+const Lab = require("../models/lab.model");
 
 class RequestFormDetailService {
   static async createRequestFormDetail(data) {
@@ -35,8 +38,17 @@ class RequestFormDetailService {
       where: {
         RequestFormId: rfId,
       },
+      include: [
+        { model: Device, as: "ThietBiText", attributes: ["Id", "TenThietBi"] },
+        {
+          model: DeviceStatus,
+          as: "TrangThaiThietBiText",
+          attributes: ["Id", "TenTrangThai"]
+        },
+        { model: Lab, as: "LabText", attributes: ["Id", "TenPhongBan"] },
+      ],
     });
-    if(!rfd) return null;
+    if (!rfd) return null;
     return rfd; // có thể null nếu không tìm thấy
   }
 
