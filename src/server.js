@@ -5,8 +5,7 @@ const dbPool = require("./configs/config.db.js"); // Import cấu hình database
 const sequelize = require("./configs/sequelize.js"); // Import Sequelize instance
 require("./models");
 const app = express();
-const port = 2811;
-
+const PORT = process.env.PORT || 2811;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -37,8 +36,8 @@ async function startServer() {
     //await sequelize.sync({ force: false, alter: true });
     console.log("✅ Đồng bộ hóa Models với Database thành công.");
 
-    app.listen(port, () => {
-      console.log(`Server đang chạy tại http://localhost:${port}`);
+    app.listen(PORT, () => {
+      console.log(`Server đang chạy tại http://localhost:${PORT}`);
     });
   } catch (error) {
     console.error("❌ Lỗi khi khởi động server hoặc đồng bộ DB:", error);

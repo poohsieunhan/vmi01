@@ -43,10 +43,11 @@ class RequestFormDetailService {
         {
           model: DeviceStatus,
           as: "TrangThaiThietBiText",
-          attributes: ["Id", "TenTrangThai"]
+          attributes: ["Id", "TenTrangThai"],
         },
         { model: Lab, as: "LabText", attributes: ["Id", "TenPhongBan"] },
       ],
+      order: [["Id", "DESC"]],
     });
     if (!rfd) return null;
     return rfd; // có thể null nếu không tìm thấy

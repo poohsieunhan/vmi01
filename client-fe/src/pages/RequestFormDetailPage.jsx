@@ -171,9 +171,10 @@ function RequestFormDetailPage() {
       };
       const newDetail = await requestFormDetailApi.add(payload);
 
-       const reloadRFD = await fetchRequestFormDetails(rfId);
-      
-      setDetails((prev) => [...prev, newDetail]);
+      const reloadRFD = await fetchRequestFormDetails(rfId);
+
+      setDetails((prev) => [newDetail, ...prev]);
+      //setDetails(reloadRFD);
 
       // Reset form để nhập thiết bị khác
       setDetailForm(initialDetailForm);
@@ -242,6 +243,19 @@ function RequestFormDetailPage() {
               value={detailForm.ThietBiId}
               options={deviceOptions}
               onChange={handleDeviceChange}
+            />
+          </div>
+
+          <div className="col-span-3">
+            <label className="block text-xs font-semibold text-slate-600 mb-1">
+              Serial
+            </label>
+            <input
+              type="text"
+              name="ThietBiSerial"
+              value={detailForm.ThietBiSerial}
+              onChange={handleDetailChange}
+              className="w-full border border-slate-300 rounded px-2 py-1 text-sm"
             />
           </div>
 
@@ -363,10 +377,13 @@ function RequestFormDetailPage() {
 
       {/* NÚT SAVE CUỐI CÙNG */}
       <div className="flex justify-end gap-2">
-        <button className="px-4 py-2 bg-indigo-600 text-white rounded">
+        {/*<button className="px-4 py-2 bg-indigo-600 text-white rounded">
           Lưu chi tiết phiếu
-        </button>
-        <button onClick={() => navigate("/requestform")}className="px-4 py-2 bg-indigo-600 text-white rounded">
+        </button>*/}
+        <button
+          onClick={() => navigate("/requestform")}
+          className="px-4 py-2 bg-indigo-600 text-white rounded"
+        >
           Quay lại danh sách phiếu
         </button>
       </div>

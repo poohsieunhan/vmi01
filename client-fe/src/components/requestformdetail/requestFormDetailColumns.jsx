@@ -29,6 +29,13 @@ export const requestFormDetailColumns = [
     thClassName: "whitespace-nowrap",
     tdClassName: "whitespace-nowrap",
   },
+          {
+    id: "ThietBiSerial",
+    header: "Serial",
+    accessor:"ThietBiSerial",
+    thClassName: "whitespace-nowrap",
+    tdClassName: "whitespace-nowrap",
+  },
   {
     id: "TrangThaiThietBiText",
     header: "THIẾT BỊ",

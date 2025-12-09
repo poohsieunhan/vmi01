@@ -39,7 +39,7 @@ const RequestFormDetail = sequelize.define(
       allowNull: false,
       references: {
         model: "tblDeviceStatus", // tên bảng tblDeviceStatus trong database
-        key: "Id",  
+        key: "Id",
       },
       onUpdate: "CASCADE",
       onDelete: "RESTRICT",
@@ -48,7 +48,7 @@ const RequestFormDetail = sequelize.define(
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
-    },  
+    },
     isKD: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
@@ -58,12 +58,12 @@ const RequestFormDetail = sequelize.define(
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
-    },  
+    },
     isKhac: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
-    }, 
+    },
     LabId: {
       type: DataTypes.TINYINT,
       allowNull: true,
@@ -77,7 +77,11 @@ const RequestFormDetail = sequelize.define(
     GhiChu: {
       type: DataTypes.STRING(150),
       allowNull: true,
-    }, 
+    },
+    ThietBiSerial: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+    },
   },
   {
     tableName: "tblRequestFormDetail", // Tên bảng trong database

@@ -10,5 +10,6 @@ router.use("/api/v1/requestform", require("./requestform")); // Import requestfo
 router.use("/api/v1/requestformdetail", require("./requestformdetail")); // Import requestformdetail routes
 router.use("/api/v1/lab", require("./lab")); // Import lab routes
 router.use("/api/v1/devicestatus", require("./devicestatus")); // Import devicestatus routes
+router.use("/api/v1/export", require("./export")); // Import export routes
 
 module.exports = router;

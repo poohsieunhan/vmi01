@@ -1,12 +1,14 @@
 import MyDataTable from "../components/common/MyDataTable";
-import RequestFormModal from "../components/requestform/RequestFormModal"
+import RequestFormModal from "../components/requestform/RequestFormModal";
 import MySearchInput from "../components/common/MySearchInput";
-import { useRequest } from "../hooks/requestform/useRequest"
-import { useRequestForm } from "../hooks/requestform/useRequestForm"
+import { useRequest } from "../hooks/requestform/useRequest";
+import { useRequestForm } from "../hooks/requestform/useRequestForm";
 import { requestFormColumns } from "../components/requestform/requestFormColumns";
 import { useState, useEffect } from "react";
 import companyApi from "../services/companyApi";
 import { useNavigate } from "react-router-dom";
+import exportApi from "../services/exportApi";
+import toast from "react-hot-toast";
 
 function RequestFormPage() {
   const {
@@ -39,13 +41,12 @@ function RequestFormPage() {
   const [companies, setCompanies] = useState([]);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
         const result = await companyApi.getAll({ page: 1, limit: 1000 });
-        setCompanies(result.data || []); 
-        console.log(result)
+        setCompanies(result.data || []);
+        console.log(result);
       } catch (err) {
         console.error("Failed to load companies", err);
       }
@@ -53,6 +54,47 @@ function RequestFormPage() {
 
     fetchCompanies();
   }, []);
+
+  const handleExportWord = async (requestForm) => {
+    try {
+      const _id = requestForm.Id;
+      console.log("Id gửi lên BE:", _id, typeof _id);
+      console.log("handle export:", requestForm);
+      const res = await exportApi.exportWord(_id);
+
+      const blob = new Blob([res.data], {
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Phieu-tiep-nhan-v1.docx`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Lỗi khi export Word:", err);
+      toast.error("Không thể xuất file Word");
+
+      if (err.response && err.response.data instanceof Blob) {
+        err.response.data.text().then((text) => {
+          console.log("Server error body:", text);
+          toast.error(text);
+        });
+      } else if (err.response && err.response.data) {
+        console.log("Server error data:", err.response.data);
+        toast.error(
+          err.response.data.message || "Không thể xuất file Word (400)"
+        );
+      } else {
+        toast.error("Không thể xuất file Word");
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-100 px-4 py-6">
@@ -104,9 +146,11 @@ function RequestFormPage() {
               actionsHeader="THAO TÁC"
               renderActions={(requestForm) => (
                 <>
-                <button
+                  <button
                     type="button"
-                    onClick={() => navigate(`/requestformdetail/${requestForm.Id}`)}
+                    onClick={() =>
+                      navigate(`/requestformdetail/${requestForm.Id}`)
+                    }
                     className="px-3 py-1 text-xs font-medium rounded bg-blue-500 text-white hover:bg-blue-600"
                   >
                     Thêm chi tiết phiếu
@@ -124,6 +168,13 @@ function RequestFormPage() {
                     className="px-3 py-1 text-xs font-medium rounded bg-red-500 text-white hover:bg-red-600"
                   >
                     Xóa
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleExportWord(requestForm)}
+                    className="px-3 py-1 text-xs font-medium rounded bg-red-500 text-white hover:bg-red-600"
+                  >
+                    Xuất Phiếu
                   </button>
                 </>
               )}

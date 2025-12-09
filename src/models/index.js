@@ -5,7 +5,6 @@ const RequestFormDetail = require("./requestformdetail.model");
 const DeviceStatus = require("./devicestatus.model");
 const Lab = require("./lab.model");
 
-
 RequestForm.belongsTo(Company, {
   as: "CongTy",
   foreignKey: "CongtyId",
@@ -19,7 +18,7 @@ RequestForm.belongsTo(Company, {
 });
 
 RequestForm.hasMany(RequestFormDetail, {
-  as: "ChiTiet",
+  as: "Details",
   foreignKey: "RequestFormId",
 });
 
@@ -46,7 +45,6 @@ RequestFormDetail.belongsTo(Lab, {
   foreignKey: "LabId",
   targetKey: "Id",
 });
-
 
 module.exports = {
   Company,
