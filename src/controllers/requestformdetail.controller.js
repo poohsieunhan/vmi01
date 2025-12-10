@@ -6,6 +6,7 @@ const { SuccessResponse } = require("../core/success.response");
 class RequestFormDetailController {
   createRequestFormDetail = async (req, res, next) => {
     try {
+      console.log("CreateRequestFormDetail - HEADERS:", req.body);
       new SuccessResponse({
         message: "RequestFormDetail created successfully",
         metadata: await RequestFormDetailService.createRequestFormDetail(

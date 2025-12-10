@@ -7,9 +7,9 @@ const Docxtemplater = require("docxtemplater");
 //const RequestFormDetail = require("../models/requestformdetail.model");
 const CompanyModel = require("../models/company.model");
 const { RequestFormDetail, RequestForm } = require("../models");
-// const Device = require("../models/device.model");
-// const DeviceStatus = require("../models/devicestatus.model");
-// const Lab = require("../models/lab.model");
+const Device = require("../models/device.model");
+const DeviceStatus = require("../models/devicestatus.model");
+const Lab = require("../models/lab.model");
 
 function formatDateDDMMYYYY(date) {
   if (!date) return "";
@@ -43,10 +43,42 @@ exports.exportWord = async (req, res, next) => {
         {
           model: RequestFormDetail,
           as: "Details",
-          // include: ["Device", "DeviceStatus", "Lab"], // bật nếu bạn đã khai báo
+          include: [
+            {
+              model: Device,
+              as: "ThietBiText",
+              attributes: ["Id", "TenThietBi"],
+            },
+            {
+              model: DeviceStatus,
+              as: "TrangThaiThietBiText",
+              attributes: ["Id", "TenTrangThai"],
+            },
+            {
+              model: Lab,
+              as: "LabText",
+              attributes: ["Id", "TenPhongBan"],
+            },
+          ],
         },
-        { model: CompanyModel, as: "CongTy", attributes: ["Id", "TenCongTy"] },
-        // { model: Company, as: "CongTySuDung" },
+        {
+          model: CompanyModel,
+          as: "CongTy",
+          attributes: [
+            "Id",
+            "TenCongTy",
+            "DiaChi",
+            "MaSoThue",
+            "Tel",
+            "Email",
+            "Fax",
+          ],
+        },
+        {
+          model: CompanyModel,
+          as: "CongTySuDung",
+          attributes: ["Id", "TenCongTy", "DiaChi"],
+        },
       ],
     });
 
@@ -55,6 +87,11 @@ exports.exportWord = async (req, res, next) => {
     }
     console.log("Details length:", requestForm.Details?.length);
     console.log("Details data:", JSON.stringify(requestForm.Details, null, 2));
+    console.log("Details data:", JSON.stringify(requestForm.CongTy, null, 2));
+    console.log(
+      "Details data:",
+      JSON.stringify(requestForm.CongTySuDung, null, 2)
+    );
     // Chuẩn hóa dữ liệu cho template
     const dataForDoc = {
       // HEADER
@@ -67,13 +104,14 @@ exports.exportWord = async (req, res, next) => {
       ),
 
       // Thông tin công ty
-      CongTyTen: requestForm.CongTy?.TenCongTy || "",
-      CongTyDiaChi: requestForm.CongTy?.DiaChi || "",
-      CongTyMST: requestForm.CongTy?.MaSoThue || "",
-      CongTyDienThoai: requestForm.CongTy?.DienThoai || "",
-      CongTyEmail: requestForm.CongTy?.Email || "",
+      TenCongTy: requestForm.CongTy?.TenCongTy || "",
+      DiaChi: requestForm.CongTy?.DiaChi || "",
+      MaSoThue: requestForm.CongTy?.MaSoThue || "",
+      Tel: requestForm.CongTy?.Tel || "",
+      Email: requestForm.CongTy?.Email || "",
+      Fax: requestForm.CongTy?.Fax || "",
 
-      CongTySuDungTen: requestForm.CongTySuDung?.TenCongTy || "",
+      TenCongTySuDungText: requestForm.CongTySuDung?.TenCongTy || "",
       CongTySuDungDiaChi: requestForm.CongTySuDung?.DiaChi || "",
 
       // Checkbox: true => in chữ "X"
@@ -91,15 +129,15 @@ exports.exportWord = async (req, res, next) => {
       details: (requestForm.Details || []).map((d, index) => ({
         stt: index + 1,
         TenThietBi:
-          d.Device?.TenThietBi || `Thiết bị ${d.ThietBiId ?? ""}`.trim(),
+          d.ThietBiText?.TenThietBi || `Thiết bị ${d.ThietBiId ?? ""}`.trim(),
         ThietBiSerial: d.ThietBiSerial || "",
         SoLuong: d.SoLuong,
-        TenTrangThaiThietBi: d.DeviceStatus?.TenTrangThai || "",
+        TenTrangThaiThietBi: d.TrangThaiThietBiText?.TenTrangThai || "",
         HC: d.isHC ? "X" : "",
         KD: d.isKD ? "X" : "",
         DTN: d.isDTN ? "X" : "",
         Khac: d.isKhac ? "X" : "",
-        TenLab: d.Lab?.MaLab || d.Lab?.TenLab || "",
+        TenLab: d.LabText?.TenPhongBan || "",
         GhiChu: d.GhiChu || "",
       })),
     };
@@ -117,10 +155,8 @@ exports.exportWord = async (req, res, next) => {
       linebreaks: true,
     });
 
-    doc.setData(dataForDoc);
-
     try {
-      doc.render();
+      doc.render(dataForDoc);
     } catch (error) {
       console.error("Lỗi render docx:", error);
       return res.status(500).json({ message: "Lỗi khi sinh file Word" });

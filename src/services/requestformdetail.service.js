@@ -8,6 +8,7 @@ const Lab = require("../models/lab.model");
 
 class RequestFormDetailService {
   static async createRequestFormDetail(data) {
+    console.log("data createRequestFormDetail:", data);
     const rf = await RequestFormDetailModel.create(data);
     return rf;
   }
