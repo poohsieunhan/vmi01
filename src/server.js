@@ -6,6 +6,14 @@ const sequelize = require("./configs/sequelize.js"); // Import Sequelize instanc
 require("./models");
 const app = express();
 const PORT = process.env.PORT || 2811;
+
+app.use(
+  cors({
+    origin: ["http://localhost:2811", "https://vmi01-fe.vercel.app"],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
