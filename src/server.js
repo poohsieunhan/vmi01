@@ -4,6 +4,7 @@ const express = require("express");
 const dbPool = require("./configs/config.db.js"); // Import cấu hình database
 const sequelize = require("./configs/sequelize.js"); // Import Sequelize instance
 require("./models");
+const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 2811;
 
