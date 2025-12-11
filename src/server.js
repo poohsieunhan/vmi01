@@ -23,7 +23,9 @@ app.use(express.urlencoded({ extended: true }));
 const routes = require("./routes");
 app.use(routes);
 
-app.get("", async (req, res) => {});
+app.get("/health", async (req, res) => {
+  res.status(200).send("I'm OK!");
+});
 
 // Khởi động Server
 // app.listen(port, () => {
