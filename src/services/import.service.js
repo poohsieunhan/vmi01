@@ -1,14 +1,10 @@
 const XLSX = require("xlsx");
 const CompanyModel = require("../models/company.model");
 
-const ImportCompanyController = async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ message: "Không có file được upload" });
-    }
-
+class ImportService {
+  static async importCompany(buffer) {
     // Đọc file từ buffer
-    const workbook = XLSX.read(req.file.buffer, { type: "buffer" });
+    const workbook = XLSX.read(buffer, { type: "buffer" });
     const sheetName = workbook.SheetNames[0];
     const sheet = workbook.Sheets[sheetName];
 
@@ -32,10 +28,18 @@ const ImportCompanyController = async (req, res) => {
         NguoiDaiDien: row["NguoiDaiDien"],
         ChucVu: row["ChucVu"],
       };
-
+      const existingCompany = CompanyModel.findOne({
+        where: { MaSoThue: item.MaSoThue },
+      });
+      console.log("existingCompany:", item.MaSoThue);
       // Validate cơ bản
       if (!item.TenCongTy) {
         errors.push(`Dòng ${index + 2}: Thiếu TenCongTy`);
+        return;
+      }
+      if (existingCompany) {
+        errors.push(`Dòng ${index + 2}: Mã số thuế đã tồn tại`);
+        return;
       } else {
         insertData.push(item);
       }
@@ -45,16 +49,12 @@ const ImportCompanyController = async (req, res) => {
       await CompanyModel.bulkCreate(insertData);
     }
 
-    return res.json({
-      message: "Import hoàn tất",
+    return {
       total: rows.length,
       inserted: insertData.length,
       errors,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({ message: "Lỗi import Excel" });
+    };
   }
-};
+}
 
-module.exports = ImportCompanyController;
+module.exports = ImportService;

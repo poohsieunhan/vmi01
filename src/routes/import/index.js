@@ -1,5 +1,5 @@
 const express = require("express");
-const importCompanyController = require("../../controllers/importcompany.controller");
+const ImportController = require("../../controllers/import.controller");
 const asyncHandler = require("../../helpers/asyncHandler.js");
 const uploadExcel = require("../../ultis/uploadExcel");
 const router = express.Router();
@@ -11,7 +11,7 @@ const router = express.Router();
 router.post(
   "/importCompany",
   uploadExcel.single("file"),
-  asyncHandler(importCompanyController)
+  asyncHandler(ImportController.importCompany)
 );
 // router.post("", asyncHandler(deviceController.createDevice));
 // router.put("/:Id", asyncHandler(deviceController.updateDevice));
