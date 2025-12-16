@@ -3,7 +3,6 @@
 const _ = require("lodash");
 //const {Types} = require('mongoose');
 
-
 //const convertToObjectIdMongo = (id) => Types.ObjectId(id);
 
 const getInfoData = ({ fields = [], object = {} }) => {
@@ -49,7 +48,9 @@ const updateNestedObjectParse = (object) => {
   return final;
 };
 
-
+const convertCheckbox = (value) => {
+  return value ? "☑" : "☐";
+};
 
 module.exports = {
   getInfoData,
@@ -57,4 +58,5 @@ module.exports = {
   unGetSelectData,
   removeUndefinedObject,
   updateNestedObjectParse,
+  convertCheckbox,
 };

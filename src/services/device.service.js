@@ -1,12 +1,14 @@
 // services/company.service.js
 const DeviceModel = require("../models/device.model");
-const {ErrorResponse, BadRequestError} = require("../core/error.response");
+const { ErrorResponse, BadRequestError } = require("../core/error.response");
 
 class DeviceService {
   // Tạo mới 1 Company
   static async createDevice(data) {
     const tenThieBi = data.TenThietBi;
-    const foundDevice = await DeviceModel.findOne({ where: { TenThietBi: tenThieBi } });
+    const foundDevice = await DeviceModel.findOne({
+      where: { TenThietBi: tenThieBi },
+    });
     if (foundDevice) {
       throw new ErrorResponse("Device with this TenThietBi already exists.");
     }
@@ -39,7 +41,7 @@ class DeviceService {
   // Lấy detail 1 Company theo Id
   static async getDeviceById(id) {
     const device = await DeviceModel.findByPk(id);
-    return device; // có thể null nếu không tìm thấy
+    return device;
   }
 
   // Cập nhật 1 Company

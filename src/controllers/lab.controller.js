@@ -28,14 +28,14 @@ class LabController {
     }).send(res);
   };
 
-  //   getDeviceById = async (req, res, next) => {
-  //     const { Id } = req.params;
-  //     const device = await deviceService.getDeviceById(Id);
-  //     new SuccessResponse({
-  //       message: "Device retrieved successfully",
-  //       metadata: device,
-  //     }).send(res);
-  //   };
+  getLabById = async (req, res, next) => {
+    const { Id } = req.params;
+    const lab = await labService.getLabById(Id);
+    new SuccessResponse({
+      message: "Lab retrieved successfully",
+      metadata: lab,
+    }).send(res);
+  };
 
   //   updateDevice = async (req, res, next) => {
   //     const { Id } = req.params;

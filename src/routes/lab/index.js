@@ -7,7 +7,7 @@ const router = express.Router();
 // router.use(checkPermission('0000'));
 
 router.get("", asyncHandler(labController.getAllLabs));
-// router.get("/:Id", asyncHandler(deviceController.getDeviceById));
+router.get("/:Id", asyncHandler(labController.getLabById));
 // router.post("", asyncHandler(deviceController.createDevice));
 // router.put("/:Id", asyncHandler(deviceController.updateDevice));
 // router.delete("/:Id", asyncHandler(deviceController.deleteDevice));

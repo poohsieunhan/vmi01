@@ -28,14 +28,14 @@ class DeviceStatusController {
     }).send(res);
   };
 
-  //   getDeviceById = async (req, res, next) => {
-  //     const { Id } = req.params;
-  //     const device = await deviceService.getDeviceById(Id);
-  //     new SuccessResponse({
-  //       message: "Device retrieved successfully",
-  //       metadata: device,
-  //     }).send(res);
-  //   };
+  getAllDeviceStatusById = async (req, res, next) => {
+    const { Id } = req.params;
+    const device = await deviceStatusService.getDeviceStatusById(Id);
+    new SuccessResponse({
+      message: "Device Status retrieved successfully",
+      metadata: device,
+    }).send(res);
+  };
 
   //   updateDevice = async (req, res, next) => {
   //     const { Id } = req.params;

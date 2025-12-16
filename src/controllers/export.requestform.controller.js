@@ -10,6 +10,7 @@ const { RequestFormDetail, RequestForm } = require("../models");
 const Device = require("../models/device.model");
 const DeviceStatus = require("../models/devicestatus.model");
 const Lab = require("../models/lab.model");
+const { convertCheckbox } = require("../ultis");
 
 function formatDateDDMMYYYY(date) {
   if (!date) return "";
@@ -115,13 +116,14 @@ exports.exportWord = async (req, res, next) => {
       CongTySuDungDiaChi: requestForm.CongTySuDung?.DiaChi || "",
 
       // Checkbox: true => in chữ "X"
-      ThucHienTaiVMI: requestForm.ThucHienTai ? "X" : "",
-      ThucHienTaiCoSo: requestForm.CoSo ? "X" : "",
-      YeuCauGiay: requestForm.YeuCauGiay ? "X" : "",
-      YeuCauHieuChinh: requestForm.YeuCauHieuChinh ? "X" : "",
-      YeuCauPhuongPhap: requestForm.YeuCauPhuongPhap ? "X" : "",
-      GiaoNhanTrucTiep: requestForm.HinhThucGiaoNhan ? "X" : "",
-      GiaoNhanGianTiep: !requestForm.HinhThucGiaoNhan ? "X" : "",
+      ThucHienTaiVMI: convertCheckbox(requestForm.ThucHienTaiVMI),
+      //requestForm.ThucHienTai ? "X" : "",
+      ThucHienTaiCoSo: convertCheckbox(requestForm.CoSo),
+      YeuCauGiay: convertCheckbox(requestForm.YeuCauGiay),
+      YeuCauHieuChinh: convertCheckbox(requestForm.YeuCauHieuChinh),
+      YeuCauPhuongPhap: convertCheckbox(requestForm.YeuCauPhuongPhap),
+      GiaoNhanTrucTiep: convertCheckbox(requestForm.HinhThucGiaoNhan),
+      GiaoNhanGianTiep: convertCheckbox(!requestForm.HinhThucGiaoNhan),
 
       SoBG: requestForm.SoBG || "",
 
@@ -133,10 +135,10 @@ exports.exportWord = async (req, res, next) => {
         ThietBiSerial: d.ThietBiSerial || "",
         SoLuong: d.SoLuong,
         TenTrangThaiThietBi: d.TrangThaiThietBiText?.TenTrangThai || "",
-        HC: d.isHC ? "X" : "",
-        KD: d.isKD ? "X" : "",
-        DTN: d.isDTN ? "X" : "",
-        Khac: d.isKhac ? "X" : "",
+        HC: convertCheckbox(d.isHC),
+        KD: convertCheckbox(d.isKD),
+        DTN: convertCheckbox(d.isDTN),
+        Khac: convertCheckbox(d.isKhac),
         TenLab: d.LabText?.TenPhongBan || "",
         GhiChu: d.GhiChu || "",
       })),

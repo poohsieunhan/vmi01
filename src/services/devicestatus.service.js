@@ -36,6 +36,11 @@ class DeviceStatusService {
     };
   }
 
+  static async getDeviceStatusById(id) {
+    const ds = await DeviceStatusModel.findByPk(id);
+    return ds;
+  }
+
   static async updateDeviceStatus(id, data) {
     const ds = await DeviceStatusModel.findByPk(id);
     if (!lab) {

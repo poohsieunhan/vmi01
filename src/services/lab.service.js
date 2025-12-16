@@ -38,6 +38,11 @@ class LabService {
     };
   }
 
+  static async getLabById(id) {
+    const lab = await LabModel.findByPk(id);
+    return lab;
+  }
+
   static async updateLab(id, data) {
     const lab = await LabModel.findByPk(id);
     if (!lab) {
