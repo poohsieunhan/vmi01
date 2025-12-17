@@ -116,7 +116,7 @@ exports.exportWord = async (req, res, next) => {
       CongTySuDungDiaChi: requestForm.CongTySuDung?.DiaChi || "",
 
       // Checkbox: true => in chữ "X"
-      ThucHienTaiVMI: convertCheckbox(requestForm.ThucHienTaiVMI),
+      ThucHienTaiVMI: convertCheckbox(requestForm.ThucHienTai),
       //requestForm.ThucHienTai ? "X" : "",
       ThucHienTaiCoSo: convertCheckbox(requestForm.CoSo),
       YeuCauGiay: convertCheckbox(requestForm.YeuCauGiay),
