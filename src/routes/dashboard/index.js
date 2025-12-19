@@ -7,7 +7,7 @@ const router = express.Router();
 // router.use(checkPermission('0000'));
 
 router.get("/summary", asyncHandler(dashboardController.getRFSummary));
-router.get(
+router.post(
   "/inspec-stats",
   asyncHandler(dashboardController.getInspectionStats)
 );
