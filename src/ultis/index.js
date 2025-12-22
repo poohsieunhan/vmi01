@@ -52,6 +52,10 @@ const convertCheckbox = (value) => {
   return value ? "☑" : "☐";
 };
 
+const convertSoPhieu = (str) => {
+  return str?.replace(/\//g, "_");
+};
+
 module.exports = {
   getInfoData,
   getSelectData,
@@ -59,4 +63,5 @@ module.exports = {
   removeUndefinedObject,
   updateNestedObjectParse,
   convertCheckbox,
+  convertSoPhieu,
 };

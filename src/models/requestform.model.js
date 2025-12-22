@@ -61,11 +61,13 @@ const RequestForm = sequelize.define(
     },
     NgayTraThucTe: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     },
     CongTySuDungId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: 0,
       references: {
         model: "tblCompany", // tên bảng Company trong database
         key: "Id",

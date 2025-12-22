@@ -11,6 +11,7 @@ const Device = require("../models/device.model");
 const DeviceStatus = require("../models/devicestatus.model");
 const Lab = require("../models/lab.model");
 const { convertCheckbox } = require("../ultis");
+const { convertSoPhieu } = require("../ultis");
 
 function formatDateDDMMYYYY(date) {
   if (!date) return "";
@@ -173,7 +174,9 @@ exports.exportWord = async (req, res, next) => {
     );
     res.setHeader(
       "Content-Disposition",
-      `attachment; filename=Phieu-tiep-nhan-v1.docx`
+      `attachment; filename=Phieu-tiep-nhan-v1-${convertSoPhieu(
+        requestForm.SoPhieu
+      )}.docx`
     );
 
     return res.send(buf);
